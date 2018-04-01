@@ -4,10 +4,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <pam.h>
 
 /* Dimensions de la fenêtre */
-static unsigned int WINDOW_WIDTH = 800;
-static unsigned int WINDOW_HEIGHT = 800;
+static unsigned int WINDOW_WIDTH = 600;
+static unsigned int WINDOW_HEIGHT = 400;
+
+/* Nombres de cases visibles */
+static unsigned int NB_UNITS_X = 30;
+static unsigned int NB_UNITS_Y = 20;
 
 /* Nombre de bits par pixel de la fenêtre */
 static const unsigned int BIT_PER_PIXEL = 32;
@@ -19,8 +24,23 @@ void resizeViewport() {
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(-1., 1., -1., 1.);
+    gluOrtho2D(0., (float)NB_UNITS_X, 0., (float)NB_UNITS_Y);
     SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE);
+}
+
+void drawLandmark(){
+    int i;
+    glPointSize(4.); 
+    glBegin(GL_POINTS);
+        glColor3ub(255, 0, 0);
+        for (i = 0; i < NB_UNITS_X; i++){
+            glVertex2f(NB_UNITS_X - i, 0);
+        }
+        glColor3ub(0, 255, 0);
+        for (i = 0; i < NB_UNITS_Y; i++){
+            glVertex2f(0, NB_UNITS_Y - i);
+        }
+    glEnd();
 }
 
 int main(int argc, char** argv) {
@@ -37,6 +57,7 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
     SDL_WM_SetCaption("Flapimac", NULL);
+    resizeViewport();
 
     glClearColor(0.1, 0.1, 0.1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -54,6 +75,8 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
 
         // Dessin
+
+        drawLandmark();
 
         /* Boucle traitant les evenements */
         SDL_Event e;
