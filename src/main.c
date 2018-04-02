@@ -29,9 +29,13 @@ int main(int argc, char** argv){
     glClearColor(0.1, 0.1, 0.1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    ElementList* playerList;
-    ElementList* obstacleList;
-    ElementList* enemyList;
+    ElementList playerList;
+    ElementList obstacleList;
+    ElementList enemyList;
+
+    playerList = NULL;
+    obstacleList = NULL;
+    enemyList = NULL;
 
     /* map loading */
     FILE *level1;
@@ -55,11 +59,11 @@ int main(int argc, char** argv){
                     if (r != 255 || g != 255 || b != 255) {
                         if (r == 0 || g == 0 || b == 0) {
                             /* Obstacle */
-                            addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index), &obstacleList);
+                            addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index), &obstacleList);
                         }
                         if (r == 255 || g == 0 || b == 0) {
                             /* Ennemi */
-                            addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index), &enemyList);
+                            addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index), &enemyList);
                         }
 
                         /* // Dessin des éléments

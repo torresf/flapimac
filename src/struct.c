@@ -1,3 +1,4 @@
+#include "display.h"
 #include "struct.h"
 
 /* Fonctions Fonctions liées aux Elements */
@@ -20,15 +21,15 @@ Element* allocElement(int type, float x, float y){
 }
 /* Fonction qui ajoute l'adresse d'un Element passé en paramètre à une liste chainée passée en paramètre sans valeur de retour */
 void addElementToList(Element* element, ElementList* list){
-    ElementList* tmpList;
-    tmpList = list;
-    if (*tmpList == NULL) {
-        *tmpList = element;
+    ElementList tmpList;
+    tmpList = *list;
+    if (tmpList == NULL) {
+        tmpList = element;
     } else {
-        element->next = *tmpList;
-        *tmpList = element;
+        element->next = tmpList;
+        tmpList = element;
     }
-    *list = *tmpList;
+    *list = tmpList;
 }
 /* Fonction qui dessine les Elements de la liste passée en paramètre sans valeur de retour */
 void drawElements(ElementList list){
@@ -37,7 +38,7 @@ void drawElements(ElementList list){
     g = 0;
     b = 0;
     while (list) {
-        switch ((*list)->type){
+        switch (list->type){
             case 0:
                 b = 255;
                 break;
@@ -54,7 +55,7 @@ void drawElements(ElementList list){
         }
         glColor3ub(r, g, b);
         glPushMatrix();
-            glTranslatef(x, NB_UNITS_Y - 1 - y, 0);
+            glTranslatef(list->x, list->y, 0);
             drawSquare(1);
         glPopMatrix();
     }

@@ -13,12 +13,6 @@ static const unsigned int BIT_PER_PIXEL = 32;
 /* Nombre minimal de millisecondes separant le rendu de deux images */
 static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
 
-typedef struct element {
-    int type; // Type de l'élément 
-    float x, y; // Coordonnées de l'élément 
-    struct Element* next;  // Next Element
-} Element, *ElementList;
-
 /* Fonction qui nous sert à redimensionner notre repère dans la fenêtre de travail */
 void resizeViewport();
 

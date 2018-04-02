@@ -9,12 +9,12 @@
 #include <assert.h>
 
 /* Nombres de cases visibles */
-static unsigned int NB_UNITS_X = 30;
-static unsigned int NB_UNITS_Y = 20;
+static const unsigned int NB_UNITS_X = 30;
+static const unsigned int NB_UNITS_Y = 20;
 
 /* Dessine un carré */
 void drawLandmark();
 /* Dessine un carré "canonique" */
 void drawSquare(int full);
 
-#endif 
+#endif
