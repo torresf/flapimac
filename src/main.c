@@ -28,7 +28,9 @@ int main(int argc, char** argv){
     glClearColor(0.1, 0.1, 0.1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    ElementList* obstaclesList;
+    ElementList* playerList;
+    ElementList* obstacleList;
+    ElementList* enemyList;
 
     /* map loading */
     FILE *level1;
@@ -43,22 +45,20 @@ int main(int argc, char** argv){
     int r, g, b;
     int l_index = 0, c_index = 0;
     int offset;
-    while (fgets(line, sizeof line, level1) != NULL)
-    {
+    while (fgets(line, sizeof line, level1) != NULL) {
         if (line[0] != '#') {
-            if (line_number >= 4)
-            {
+            if (line_number >= 4) {
                 char *data = line;
-                while (sscanf(data, " %d %d %d%n", &r, &g, &b, &offset) == 3)
-                {
+                while (sscanf(data, " %d %d %d%n", &r, &g, &b, &offset) == 3) {
                     data += offset;
                     if (r != 255 || g != 255 || b != 255) {
                         if (r == 0 || g == 0 || b == 0) {
-                            // Obstacle
-                            addToList()
+                            /* Obstacle */
+                            addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index), &obstacleList);
                         }
                         if (r == 255 || g == 0 || b == 0) {
-                            // Ennemi
+                            /* Ennemi */
+                            addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index), &enemyList);
                         }
 
                         /* // Dessin des éléments
@@ -90,9 +90,14 @@ int main(int argc, char** argv){
 
         glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
 
-        // Dessin
         // Dessin du repère 
         drawLandmark();
+        // Dessin des joueurs
+        drawElements(playerList);
+        // Dessin des obstacles
+        drawElements(obstacleList);
+        // Dessin des ennemis
+        drawElements(enemyList);
 
         /* Boucle traitant les evenements */
         SDL_Event e;
