@@ -32,10 +32,12 @@ int main(int argc, char** argv){
     ElementList playerList;
     ElementList obstacleList;
     ElementList enemyList;
+    ElementList bonusList;
 
     playerList = NULL;
     obstacleList = NULL;
     enemyList = NULL;
+    bonusList = NULL;
 
     /* map loading */
     FILE *level1;
@@ -57,21 +59,22 @@ int main(int argc, char** argv){
                 while (sscanf(data, " %d %d %d%n", &r, &g, &b, &offset) == 3) {
                     data += offset;
                     if (r != 255 || g != 255 || b != 255) {
-                        if (r == 0 || g == 0 || b == 0) {
+                        if (r == 0 && g == 0 && b == 255) {
+                            /* Joueur */
+                            addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index), &playerList);
+                        }
+                        if (r == 0 && g == 0 && b == 0) {
                             /* Obstacle */
                             addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index), &obstacleList);
                         }
-                        if (r == 255 || g == 0 || b == 0) {
+                        if (r == 255 && g == 0 && b == 0) {
                             /* Ennemi */
                             addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index), &enemyList);
                         }
-
-                        /* // Dessin des éléments
-                        glColor3ub(r, g, b);
-                        glPushMatrix();
-                            glTranslatef(c_index, NB_UNITS_Y - 1 - l_index, 0);
-                            drawSquare(1);
-                        glPopMatrix();*/
+                        if (r == 0 && g == 255 && b == 0) {
+                            /* Ennemi */
+                            addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index), &bonusList);
+                        }
                     }
                     c_index++;
                 }
@@ -103,6 +106,8 @@ int main(int argc, char** argv){
         drawElements(obstacleList);
         // Dessin des ennemis
         drawElements(enemyList);
+        // Dessin des bonus
+        drawElements(bonusList);
 
         /* Boucle traitant les evenements */
         SDL_Event e;
@@ -169,6 +174,11 @@ int main(int argc, char** argv){
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
+
+    deleteElements(&playerList);
+    deleteElements(&obstacleList);
+    deleteElements(&enemyList);
+    deleteElements(&bonusList);
 
     /* Liberation des ressources associées à la SDL */ 
     SDL_Quit();

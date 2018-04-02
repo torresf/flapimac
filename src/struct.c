@@ -38,6 +38,7 @@ void drawElements(ElementList list){
     g = 0;
     b = 0;
     while (list) {
+
         switch (list->type){
             case 0:
                 b = 255;
@@ -58,6 +59,7 @@ void drawElements(ElementList list){
             glTranslatef(list->x, list->y, 0);
             drawSquare(1);
         glPopMatrix();
+        list = list->next;
     }
 }
 /* Fonction qui vide la mémoire de tous les Elements de la liste passée en paramètre sans valeur de retour */
