@@ -88,6 +88,7 @@ int main(int argc, char** argv){
     
     int player_status = 0;
     int loop = 1;
+    float x_move = 0;
 
     /* Boucle d'affichage */
     while(loop) {
@@ -99,7 +100,6 @@ int main(int argc, char** argv){
 
         glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
 
-        
         // drawLandmark(); // Dessin du repère
 
         // Déplacement du joueur
@@ -109,9 +109,12 @@ int main(int argc, char** argv){
             playerList->y -=.1;
 
         drawElements(playerList); // Dessin des joueurs
-        drawElements(obstacleList); // Dessin des obstacles
-        drawElements(enemyList); // Dessin des ennemis
-        drawElements(bonusList); // Dessin des bonus
+        glPushMatrix();
+            glTranslatef(x_move-=.1, 0, 0);
+            drawElements(obstacleList); // Dessin des obstacles
+            drawElements(enemyList); // Dessin des ennemis
+            drawElements(bonusList); // Dessin des bonus
+        glPopMatrix();
 
         /* Boucle traitant les evenements */
         SDL_Event e;
@@ -135,7 +138,7 @@ int main(int argc, char** argv){
                 /* Touche clavier */
                 case SDL_KEYDOWN:
 
-                    printf("touche pressée (code = %d)\n", e.key.keysym.sym);
+                    // printf("touche pressée (code = %d)\n", e.key.keysym.sym);
 
                     switch(e.key.keysym.sym) {
 
@@ -166,11 +169,13 @@ int main(int argc, char** argv){
                     switch(e.key.keysym.sym) {
 
                         case SDLK_UP:
-                            player_status = 0;
+                            if (player_status == 1)
+                                player_status = 0;
                             break;
 
                         case SDLK_DOWN:
-                            player_status = 0;
+                            if (player_status == -1)
+                                player_status = 0;
                             break;
 
                         case SDLK_SPACE:
