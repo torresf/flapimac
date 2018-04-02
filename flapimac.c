@@ -6,6 +6,8 @@
 #include <assert.h>
 #include <pam.h>
 
+#define MAX_SIZE 2000
+
 /* Dimensions de la fenêtre */
 static unsigned int WINDOW_WIDTH = 600;
 static unsigned int WINDOW_HEIGHT = 400;
@@ -43,6 +45,18 @@ void drawLandmark(){
     glEnd();
 }
 
+void drawSquare(int full) {
+    GLenum primitiveType = full ? GL_QUADS : GL_LINE_LOOP;
+
+    glBegin(primitiveType);
+        glVertex2f(0, 0);
+        glVertex2f( 0, 1);
+        glVertex2f( 1,  1);
+        glVertex2f(1,  0);
+    glEnd();
+}
+
+
 int main(int argc, char** argv) {
 
     /* Initialisation de la SDL */
@@ -62,6 +76,9 @@ int main(int argc, char** argv) {
     glClearColor(0.1, 0.1, 0.1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    /* map loading */
+    FILE *level1;
+    
     int loop = 1;
 
     /* Boucle d'affichage */
@@ -75,8 +92,48 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
 
         // Dessin
+        // Dessin du repère 
+        drawLandmark(); 
 
-        drawLandmark();
+        /* opening file for reading */
+        level1 = fopen("levels/level1.ppm" , "r");
+        if (level1 == NULL) {
+            perror("Error opening file");
+            return(-1);
+        }
+        char line[MAX_SIZE];
+        int line_number = 0;
+        int r, g, b;
+        int l_index = 0, c_index = 0;
+        int offset;
+        while (fgets(line, sizeof line, level1) != NULL)
+        {
+            if (line[0] != '#') {
+                if (line_number >= 3)
+                {
+                    // Traitement par ligne
+                    // printf("%s", line);
+                    char *data = line;
+                    while (sscanf(data, " %d %d %d%n", &r, &g, &b, &offset) == 3)
+                    {
+                        data += offset;
+                        // printf("read: r = %d, g = %d, b = %d; offset = %5d\n", r, g, b, offset);
+                        if (r != 255 || g != 255 || b != 255) {
+                            glColor3ub(r, g, b);
+                            glPushMatrix();
+                                glTranslatef(c_index, NB_UNITS_Y - 1 - l_index, 0);
+                                drawSquare(1);
+                            glPopMatrix();
+                        }
+                        c_index++;
+                    }
+                    c_index = 0;
+                    l_index++;
+                }
+                line_number++;
+            }
+        }
+        fclose (level1);
 
         /* Boucle traitant les evenements */
         SDL_Event e;

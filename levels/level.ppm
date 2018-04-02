@@ -1,8 +1,0 @@
-P6
-# Le P3 signifie que les couleurs sont en ASCII, 
-# par 3 colonnes et 2 lignes,
- 3 2
-# ayant 255 pour valeur maximum, et qu'elles sont en RGB. 
-255
-255  0   0     0  255  0       0   0  255
-255 255  0    255 255 255      0   0   0
