@@ -1,5 +1,6 @@
 #include "display.h"
 #include "main.h"
+#include "struct.h"
 
 void resizeViewport() {
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);

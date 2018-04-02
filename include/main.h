@@ -14,7 +14,8 @@ static const unsigned int BIT_PER_PIXEL = 32;
 static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
 
 typedef struct element {
-    int type, x, y; // Type de primitive (GL_POINTS, GL_LINES, GL_TRIANGLES)
+    int type; // Type de l'élément 
+    float x, y; // Coordonnées de l'élément 
     struct Element* next;  // Next Element
 } Element, *ElementList;
 
