@@ -17,7 +17,7 @@ int main(int argc, char** argv){
         fprintf(stderr, "Impossible d'initialiser la SDL. Fin du programme.\n");
         return EXIT_FAILURE;
     }
-    
+
     /* Ouverture d'une fenêtre et création d'un contexte OpenGL */
     if(NULL == SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE)) {
         fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
@@ -72,7 +72,7 @@ int main(int argc, char** argv){
                             addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index), &enemyList);
                         }
                         if (r == 0 && g == 255 && b == 0) {
-                            /* Ennemi */
+                            /* Bonus */
                             addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index), &bonusList);
                         }
                     }
