@@ -86,6 +86,7 @@ int main(int argc, char** argv){
     }
     fclose (level1);
     
+    int player_status = 0;
     int loop = 1;
 
     /* Boucle d'affichage */
@@ -98,16 +99,19 @@ int main(int argc, char** argv){
 
         glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
 
-        // Dessin du repère 
-        drawLandmark();
-        // Dessin des joueurs
-        drawElements(playerList);
-        // Dessin des obstacles
-        drawElements(obstacleList);
-        // Dessin des ennemis
-        drawElements(enemyList);
-        // Dessin des bonus
-        drawElements(bonusList);
+        
+        // drawLandmark(); // Dessin du repère
+
+        // Déplacement du joueur
+        if (player_status == 1 && playerList->y < NB_UNITS_Y - 1)
+            playerList->y +=.1;
+        else if (player_status == -1 && playerList->y > 0)
+            playerList->y -=.1;
+
+        drawElements(playerList); // Dessin des joueurs
+        drawElements(obstacleList); // Dessin des obstacles
+        drawElements(enemyList); // Dessin des ennemis
+        drawElements(bonusList); // Dessin des bonus
 
         /* Boucle traitant les evenements */
         SDL_Event e;
@@ -139,9 +143,17 @@ int main(int argc, char** argv){
                             loop = 0;
                             break;
 
+                        case SDLK_UP:
+                            player_status = 1;
+                            break;
+
+                        case SDLK_DOWN:
+                            player_status = -1;
+                            break;
+
                         case SDLK_SPACE:
                             // Déclenchement du tir
-                            printf("Tir\n");
+                            printf("Début Tir\n");
                             break;
 
                         default:
@@ -151,6 +163,23 @@ int main(int argc, char** argv){
                     break;
 
                 case SDL_KEYUP:
+                    switch(e.key.keysym.sym) {
+
+                        case SDLK_UP:
+                            player_status = 0;
+                            break;
+
+                        case SDLK_DOWN:
+                            player_status = 0;
+                            break;
+
+                        case SDLK_SPACE:
+                            printf("Fin tir\n");
+                            break;
+
+                        default:
+                            break;
+                    }
                     break;
 
                 case SDL_VIDEORESIZE:
