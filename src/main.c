@@ -1,5 +1,5 @@
 #include "display.h"
-#include "flapimac.h"
+#include "main.h"
 
 void resizeViewport() {
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -28,8 +28,55 @@ int main(int argc, char** argv){
     glClearColor(0.1, 0.1, 0.1, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    ElementList* obstaclesList;
+
     /* map loading */
     FILE *level1;
+    /* opening file for reading */
+    level1 = fopen("levels/level1.ppm" , "r");
+    if (level1 == NULL) {
+        perror("Error opening file");
+        return(-1);
+    }
+    char line[MAX_SIZE];
+    int line_number = 0;
+    int r, g, b;
+    int l_index = 0, c_index = 0;
+    int offset;
+    while (fgets(line, sizeof line, level1) != NULL)
+    {
+        if (line[0] != '#') {
+            if (line_number >= 4)
+            {
+                char *data = line;
+                while (sscanf(data, " %d %d %d%n", &r, &g, &b, &offset) == 3)
+                {
+                    data += offset;
+                    if (r != 255 || g != 255 || b != 255) {
+                        if (r == 0 || g == 0 || b == 0) {
+                            // Obstacle
+                            addToList()
+                        }
+                        if (r == 255 || g == 0 || b == 0) {
+                            // Ennemi
+                        }
+
+                        /* // Dessin des éléments
+                        glColor3ub(r, g, b);
+                        glPushMatrix();
+                            glTranslatef(c_index, NB_UNITS_Y - 1 - l_index, 0);
+                            drawSquare(1);
+                        glPopMatrix();*/
+                    }
+                    c_index++;
+                }
+                c_index = 0;
+                l_index++;
+            }
+            line_number++;
+        }
+    }
+    fclose (level1);
     
     int loop = 1;
 
@@ -45,47 +92,7 @@ int main(int argc, char** argv){
 
         // Dessin
         // Dessin du repère 
-        drawLandmark(); 
-
-        /* opening file for reading */
-        level1 = fopen("levels/level1.ppm" , "r");
-        if (level1 == NULL) {
-            perror("Error opening file");
-            return(-1);
-        }
-        char line[MAX_SIZE];
-        int line_number = 0;
-        int r, g, b;
-        int l_index = 0, c_index = 0;
-        int offset;
-        while (fgets(line, sizeof line, level1) != NULL)
-        {
-            if (line[0] != '#') {
-                if (line_number >= 3)
-                {
-                    // Traitement par ligne
-                    // printf("%s", line);
-                    char *data = line;
-                    while (sscanf(data, " %d %d %d%n", &r, &g, &b, &offset) == 3)
-                    {
-                        data += offset;
-                        // printf("read: r = %d, g = %d, b = %d; offset = %5d\n", r, g, b, offset);
-                        if (r != 255 || g != 255 || b != 255) {
-                            glColor3ub(r, g, b);
-                            glPushMatrix();
-                                glTranslatef(c_index, NB_UNITS_Y - 1 - l_index, 0);
-                                drawSquare(1);
-                            glPopMatrix();
-                        }
-                        c_index++;
-                    }
-                    c_index = 0;
-                    l_index++;
-                }
-                line_number++;
-            }
-        }
-        fclose (level1);
+        drawLandmark();
 
         /* Boucle traitant les evenements */
         SDL_Event e;
