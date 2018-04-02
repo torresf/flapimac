@@ -1,26 +1,5 @@
-#include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
-#include <pam.h>
-
-#define MAX_SIZE 2000
-
-/* Dimensions de la fenêtre */
-static unsigned int WINDOW_WIDTH = 600;
-static unsigned int WINDOW_HEIGHT = 400;
-
-/* Nombres de cases visibles */
-static unsigned int NB_UNITS_X = 30;
-static unsigned int NB_UNITS_Y = 20;
-
-/* Nombre de bits par pixel de la fenêtre */
-static const unsigned int BIT_PER_PIXEL = 32;
-
-/* Nombre minimal de millisecondes separant le rendu de deux images */
-static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
+#include "display.h"
+#include "flapimac.h"
 
 void resizeViewport() {
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -30,34 +9,7 @@ void resizeViewport() {
     SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE);
 }
 
-void drawLandmark(){
-    int i;
-    glPointSize(4.); 
-    glBegin(GL_POINTS);
-        glColor3ub(255, 0, 0);
-        for (i = 0; i < NB_UNITS_X; i++){
-            glVertex2f(NB_UNITS_X - i, 0);
-        }
-        glColor3ub(0, 255, 0);
-        for (i = 0; i < NB_UNITS_Y; i++){
-            glVertex2f(0, NB_UNITS_Y - i);
-        }
-    glEnd();
-}
-
-void drawSquare(int full) {
-    GLenum primitiveType = full ? GL_QUADS : GL_LINE_LOOP;
-
-    glBegin(primitiveType);
-        glVertex2f(0, 0);
-        glVertex2f( 0, 1);
-        glVertex2f( 1,  1);
-        glVertex2f(1,  0);
-    glEnd();
-}
-
-
-int main(int argc, char** argv) {
+int main(int argc, char** argv){
 
     /* Initialisation de la SDL */
     if(-1 == SDL_Init(SDL_INIT_VIDEO)) {

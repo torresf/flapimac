@@ -1,9 +1,14 @@
 CC       =  gcc
 CFLAGS   = -Wall -O2 -g
-LIB      = -lSDL -lGLU -lGL -lm  
-INCLUDES = 
+LIB      = -lSDL -lGLU -lGL -lm
 
-OBJ      = flapimac.o 
+SRC_PATH = src
+OBJ_PATH = obj
+INC_PATH = -I include
+
+SRC_FILES = $(shell find $(SRC_PATH) -type f -name '*.c')
+OBJ_FILES = $(patsubst $(SRC_PATH)/%.c,$(OBJ_PATH)/%.o, $(SRC_FILES))
+
 RM       = rm -f
 BIN      = flapimac
 DIRNAME  = $(shell basename $$PWD)
@@ -12,22 +17,23 @@ STDNAME  = $(DIRNAME).tgz
 
 all : $(BIN)
 
-$(BIN) : $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIB) $(INCLUDES)  -o $(BIN)
+$(BIN) : $(OBJ_FILES)
+	$(CC) -o $(BIN) $(OBJ_FILES) $(CFLAGS) $(LIB)
 	@echo "--------------------------------------------------------------"
 	@echo "                 to execute type: ./$(BIN) &"
 	@echo "--------------------------------------------------------------"
 
-flapimac.o : flapimac.c
-	@echo "compile flapimac"
-	$(CC) $(CFLAGS) -c $<  
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+	@echo "compiling"
+	@mkdir -p "$(@D)"
+	$(CC) -c $< -o $@ $(CFLAGS) $(INC_PATH)
 	@echo "done..."
 
 clean :	
 	@echo "**************************"
 	@echo "CLEAN"
 	@echo "**************************"
-	$(RM) *~ $(OBJ) $(BIN) 
+	$(RM) $(OBJ_FILES) $(BIN)
 
 tar : clean 
 	@echo "**************************"
