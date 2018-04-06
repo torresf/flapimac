@@ -113,42 +113,12 @@ int main(int argc, char** argv){
 
 		// Déplacement du joueur
 
-		if (player_status == 1) {
+		if (player_status == 1) 
 			moveUp(&playerList);
-		}
-		if (player_status == -1) {
+		else if (player_status == -1)
 			moveDown(&playerList);
-		}
-		if (player_status == 2)
-		{
-			if (playerList->y < NB_UNITS_Y - 1)
-			{
-				if (playerList->speed > 0)
-				{
-					playerList->speed -= ACC;
-				} else {
-					playerList->speed = 0;
-				}
-				playerList->y += playerList->speed;
-			} else {
-				playerList->y = NB_UNITS_Y - 1;
-			}
-		}
-		if (player_status == -2)
-		{
-			if (playerList->y > 0)
-			{
-				if (playerList->speed < 0)
-				{
-					playerList->speed += ACC;
-				} else {
-					playerList->speed = 0;
-				}
-				playerList->y += playerList->speed;
-			} else {
-				playerList->y = 0;
-			}
-		}
+		else if (player_status == 0)
+			slowDown(&playerList);
 
 		checkPlayerPos(&playerList);
 		movePlayer(&playerList);
@@ -207,13 +177,13 @@ int main(int argc, char** argv){
 
 						case SDLK_UP:
 							if (player_status == 1) {
-								player_status = 2;
+								player_status = 0;
 							}
 							break;
 
 						case SDLK_DOWN:
 							if (player_status == -1) {
-								player_status = -2;
+								player_status = 0;
 							}
 							break;
 
