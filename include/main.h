@@ -1,6 +1,10 @@
 #ifndef MAIN_H
 	#define MAIN_H
 
+#include "display.h"
+#include "struct.h"
+#include "player.h"
+
 #define MAX_SIZE 2000
 
 /* Dimensions de la fenêtre */
@@ -15,5 +19,12 @@ static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
 
 /* Fonction qui nous sert à redimensionner notre repère dans la fenêtre de travail */
 void resizeViewport();
+
+typedef struct world{
+    int score; /* Numero du tour */
+    ElementList playerList, obstacleList, enemyList, bonusList; /* Listes des joueurs, obstacles, ennemis, bonus */
+} World;
+
+void initWorld(World *world);
 
 #endif

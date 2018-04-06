@@ -1,6 +1,13 @@
 # flapimac
 Jeu en OpenGL développé par Tom Samaille et Florian Torres
 
+
+# A faire
+- [ ] Créer structure Monde
+- [ ] function initWorld()
+- [ ] 
+- [ ] 
+
 # Idées améliorations
 - [ ] Déplacement gauche/droite
 - [ ] Vidéo t'es mauvais Jack si le joueur perd au début

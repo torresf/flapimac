@@ -1,7 +1,6 @@
-#include "display.h"
 #include "struct.h"
 
-/* Fonctions Fonctions liées aux Elements */
+/* Fonctions liées aux Elements (joueurs, obstacles, ennemis, bonus) */
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x,y,r,g,b passées en paramètre et renvoie le Elementeur vers cet espace mémoire */
 Element* allocElement(int type, float x, float y){
@@ -16,9 +15,11 @@ Element* allocElement(int type, float x, float y){
     element->type = type;
     element->x = x;
     element->y = y;
+    element->speed = 0;
     element->next = NULL;
     return element;
 }
+
 /* Fonction qui ajoute l'adresse d'un Element passé en paramètre à une liste chainée passée en paramètre sans valeur de retour */
 void addElementToList(Element* element, ElementList* list){
     ElementList tmpList;
@@ -31,6 +32,7 @@ void addElementToList(Element* element, ElementList* list){
     }
     *list = tmpList;
 }
+
 /* Fonction qui dessine les Elements de la liste passée en paramètre sans valeur de retour */
 void drawElements(ElementList list){
     int r, g, b;
@@ -42,6 +44,8 @@ void drawElements(ElementList list){
         switch (list->type){
             case 0:
                 b = 255;
+                r = 255;
+                g = 255;
                 break;
             case 1:
                 break;
@@ -62,6 +66,7 @@ void drawElements(ElementList list){
         list = list->next;
     }
 }
+
 /* Fonction qui vide la mémoire de tous les Elements de la liste passée en paramètre sans valeur de retour */
 void deleteElements(ElementList* list){
     while (*list) {

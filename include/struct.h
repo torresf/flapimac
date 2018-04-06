@@ -4,11 +4,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <GL/gl.h>
+#include "display.h"
 
 typedef struct element {
     int type; // Type de l'élément 
-    float x, y; // Coordonnées de l'élément 
-    struct element* next;  // Next Element
+    float x, y; // Coordonnées de l'élément
+    float speed; // Vitesse de l'élément
+    struct element* next;  // Elément suivant
 } Element, *ElementList;
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x,y,r,g,b passées en paramètre et renvoie le Elementeur vers cet espace mémoire */

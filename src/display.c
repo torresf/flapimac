@@ -20,8 +20,8 @@ void drawSquare(int full) {
 
     glBegin(primitiveType);
         glVertex2f(0, 0);
-        glVertex2f( 0, 1);
-        glVertex2f( 1,  1);
-        glVertex2f(1,  0);
+        glVertex2f(0, 1);
+        glVertex2f(1, 1);
+        glVertex2f(1, 0);
     glEnd();
 }
