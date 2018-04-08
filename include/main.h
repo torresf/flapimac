@@ -22,9 +22,10 @@ void resizeViewport();
 
 typedef struct world{
     int score; /* Numero du tour */
-    ElementList playerList, obstacleList, enemyList, bonusList; /* Listes des joueurs, obstacles, ennemis, bonus */
+    ElementList player, obstacleList, enemyList, bonusList; /* Listes des joueurs, obstacles, ennemis, bonus */
 } World;
 
 void initWorld(World *world);
+void loadMap(World *world);
 
 #endif

@@ -11,10 +11,10 @@ void moveUp(ElementList* player) {
 
 /* Déplacement du joueur vers le bas */
 void moveDown(ElementList* player) {
-    if ((*player)->speed > - MAX_SPEED)
+	if ((*player)->speed > - MAX_SPEED)
 		(*player)->speed -= ACC;
 	else
-		(*player)->speed = -MAX_SPEED;
+		(*player)->speed = - MAX_SPEED;
 }
 
 /* Ralentissement du joueur */

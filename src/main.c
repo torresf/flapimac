@@ -10,10 +10,58 @@ void resizeViewport() {
 
 void initWorld(World *world) {
 	world->score = 0;
-	world->playerList = NULL;
+	world->player = NULL;
 	world->obstacleList = NULL;
 	world->enemyList = NULL;
 	world->bonusList = NULL;
+}
+
+void loadMap(World *world) {
+	FILE *level1;
+	/* opening file for reading */
+	level1 = fopen("levels/level1.ppm" , "r");
+	if (level1 == NULL) {
+		perror("Error opening file");
+		return;
+	}
+	char line[MAX_SIZE];
+	int line_number = 0;
+	int r, g, b;
+	int l_index = 0, c_index = 0;
+	int offset;
+	while (fgets(line, sizeof line, level1) != NULL) {
+		if (line[0] != '#') {
+			if (line_number >= 4) {
+				char *data = line;
+				while (sscanf(data, " %d %d %d%n", &r, &g, &b, &offset) == 3) {
+					data += offset;
+					if (r != 255 || g != 255 || b != 255) {
+						if (r == 0 && g == 0 && b == 255) {
+							/* Joueur */
+							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index), &((*world).player));
+						}
+						if (r == 0 && g == 0 && b == 0) {
+							/* Obstacle */
+							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index), &((*world).obstacleList));
+						}
+						if (r == 255 && g == 0 && b == 0) {
+							/* Ennemi */
+							addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index), &((*world).enemyList));
+						}
+						if (r == 0 && g == 255 && b == 0) {
+							/* Bonus */
+							addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index), &((*world).bonusList));
+						}
+					}
+					c_index++;
+				}
+				c_index = 0;
+				l_index++;
+			}
+			line_number++;
+		}
+	}
+	fclose (level1);
 }
 
 int main(int argc, char** argv){
@@ -38,62 +86,7 @@ int main(int argc, char** argv){
 	World world;
 	initWorld(&world);
 
-	ElementList playerList;
-	ElementList obstacleList;
-	ElementList enemyList;
-	ElementList bonusList;
-
-	playerList = NULL;
-	obstacleList = NULL;
-	enemyList = NULL;
-	bonusList = NULL;
-
-	/* map loading */
-	FILE *level1;
-	/* opening file for reading */
-	level1 = fopen("levels/level1.ppm" , "r");
-	if (level1 == NULL) {
-		perror("Error opening file");
-		return(-1);
-	}
-	char line[MAX_SIZE];
-	int line_number = 0;
-	int r, g, b;
-	int l_index = 0, c_index = 0;
-	int offset;
-	while (fgets(line, sizeof line, level1) != NULL) {
-		if (line[0] != '#') {
-			if (line_number >= 4) {
-				char *data = line;
-				while (sscanf(data, " %d %d %d%n", &r, &g, &b, &offset) == 3) {
-					data += offset;
-					if (r != 255 || g != 255 || b != 255) {
-						if (r == 0 && g == 0 && b == 255) {
-							/* Joueur */
-							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index), &playerList); // Ou &world.playerList
-						}
-						if (r == 0 && g == 0 && b == 0) {
-							/* Obstacle */
-							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index), &obstacleList);
-						}
-						if (r == 255 && g == 0 && b == 0) {
-							/* Ennemi */
-							addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index), &enemyList);
-						}
-						if (r == 0 && g == 255 && b == 0) {
-							/* Bonus */
-							addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index), &bonusList);
-						}
-					}
-					c_index++;
-				}
-				c_index = 0;
-				l_index++;
-			}
-			line_number++;
-		}
-	}
-	fclose (level1);
+	loadMap(&world);	
 	
 	int player_status = 0;
 	int loop = 1;
@@ -114,21 +107,21 @@ int main(int argc, char** argv){
 		// Déplacement du joueur
 
 		if (player_status == 1) 
-			moveUp(&playerList);
+			moveUp(&world.player);
 		else if (player_status == -1)
-			moveDown(&playerList);
+			moveDown(&world.player);
 		else if (player_status == 0)
-			slowDown(&playerList);
+			slowDown(&world.player);
 
-		checkPlayerPos(&playerList);
-		movePlayer(&playerList);
+		checkPlayerPos(&world.player);
+		movePlayer(&world.player);
 
-		drawElements(playerList); // Dessin des joueurs
+		drawElements(world.player); // Dessin des joueurs
 		glPushMatrix();
 			glTranslatef(x_move-=.1, 0, 0);
-			drawElements(obstacleList); // Dessin des obstacles
-			drawElements(enemyList); // Dessin des ennemis
-			drawElements(bonusList); // Dessin des bonus
+			drawElements(world.obstacleList); // Dessin des obstacles
+			drawElements(world.enemyList); // Dessin des ennemis
+			drawElements(world.bonusList); // Dessin des bonus
 		glPopMatrix();
 
 		/* Boucle traitant les evenements */
@@ -218,10 +211,10 @@ int main(int argc, char** argv){
 		}
 	}
 
-	deleteElements(&playerList);
-	deleteElements(&obstacleList);
-	deleteElements(&enemyList);
-	deleteElements(&bonusList);
+	deleteElements(&world.player);
+	deleteElements(&world.obstacleList);
+	deleteElements(&world.enemyList);
+	deleteElements(&world.bonusList);
 
 	/* Liberation des ressources associées à la SDL */ 
 	SDL_Quit();

@@ -40,7 +40,6 @@ void drawElements(ElementList list){
     g = 0;
     b = 0;
     while (list) {
-
         switch (list->type){
             case 0:
                 b = 255;
