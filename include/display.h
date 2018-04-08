@@ -14,6 +14,7 @@ static const unsigned int NB_UNITS_Y = 20;
 
 /* Dessine un carré */
 void drawLandmark();
+
 /* Dessine un carré "canonique" */
 void drawSquare(int full);
 

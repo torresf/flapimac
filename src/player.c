@@ -6,7 +6,6 @@ void moveUp(ElementList* player) {
 		(*player)->speed += ACC;
 	else
 		(*player)->speed = MAX_SPEED;
-
 }
 
 /* Déplacement du joueur vers le bas */
@@ -32,11 +31,11 @@ void movePlayer(ElementList* player) {
 
 /* Vérifie que le joueur est dans le fenêtre, sinon le replace dans la fenêtre */
 void checkPlayerPos(ElementList* player) {
-	if ((*player)->y > NB_UNITS_Y - 1) {
+	if ((*player)->y >= NB_UNITS_Y - 1) {
 		(*player)->y = NB_UNITS_Y - 1;
 		(*player)->speed = 0;
 	}
-	if ((*player)->y < 0) {
+	if ((*player)->y <= 0) {
 		(*player)->y = 0;
 		(*player)->speed = 0;
 	}
