@@ -26,6 +26,7 @@ typedef struct world{
 } World;
 
 void initWorld(World *world);
+void deleteWorld(World *world);
 void loadMap(World *world);
 
 #endif

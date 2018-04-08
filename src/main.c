@@ -16,6 +16,13 @@ void initWorld(World *world) {
 	world->bonusList = NULL;
 }
 
+void deleteWorld(World *world) {
+	deleteElements(&((*world).player));
+	deleteElements(&((*world).obstacleList));
+	deleteElements(&((*world).enemyList));
+	deleteElements(&((*world).bonusList));
+}
+
 void loadMap(World *world) {
 	FILE *level1;
 	/* opening file for reading */
@@ -211,10 +218,7 @@ int main(int argc, char** argv){
 		}
 	}
 
-	deleteElements(&world.player);
-	deleteElements(&world.obstacleList);
-	deleteElements(&world.enemyList);
-	deleteElements(&world.bonusList);
+	deleteWorld(&world);
 
 	/* Liberation des ressources associées à la SDL */ 
 	SDL_Quit();
