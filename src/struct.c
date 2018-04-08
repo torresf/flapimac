@@ -53,7 +53,7 @@ void removeElementFromList(Element* element, ElementList* list) {
 	}
 }
 
-/* Vérifie si il n'y a pas de collisions entre un élément et une liste d'éléments, supprime l'élément de la 2ème liste */
+/* Vérifie si il n'y a pas de collisions entre les élémentsde deux listes différentes, si oui supprime l'élément de la 2ème liste */
 int checkIntersections(ElementList list1, ElementList* list2) {
 	ElementList tmp = *list2;
 	while (tmp) {

@@ -51,18 +51,19 @@ int main(int argc, char** argv){
 		checkPlayerPos(&world.player); // Recentre le joueur à l'intérieur si il sort de la fenêtre
 
 		/* Gestion des collisions */
-		if (checkIntersections(world.obstacleList, &(world.player)) || checkIntersections(world.player, &(world.enemyList))) { // Tue le joueur lorsqu'il touche un obstacle
+		// Supprime le joueur lorsqu'il touche un obstacle ou un ennemi et sortie de la boucle
+		if (checkIntersections(world.obstacleList, &(world.player)) || checkIntersections(world.player, &(world.enemyList))) { 
 			printf("Fin de la partie\n");
 			break;
 		}
 		if (checkIntersections(world.player, &(world.bonusList))) { // Supprime les bonus lorsqu'ils sont récupérés par le joueur)
 			printf("Bonus Récupéré !\n");
 		}
-		
+
 		/* Affichage du plateau */
-		world.player->x += .1; // Le joueur avance
+		world.player->x += PLAYER_SPEED_X; // Le joueur avance
 		glPushMatrix();
-			glTranslatef(x_move-=.1, 0, 0); // Translation pour suivre le joueur
+			glTranslatef(x_move -= PLAYER_SPEED_X, 0, 0); // Translation pour suivre le joueur
 			drawWorld(world);
 		glPopMatrix();
 

@@ -11,6 +11,9 @@
 static unsigned int WINDOW_WIDTH = 600;
 static unsigned int WINDOW_HEIGHT = 400;
 
+
+static float PLAYER_SPEED_X = 0.1;
+
 /* Nombre de bits par pixel de la fenêtre */
 static const unsigned int BIT_PER_PIXEL = 32;
 
@@ -28,7 +31,7 @@ void resizeViewport();
 /* Initialise les champs et listes chainées du monde */
 void initWorld(World *world);
 
-/* Libère la mémoire associée au monde */
+/* Affiche les éléments du monde : Le joueur, les obstacles, les ennemis, les bonus */
 void drawWorld(World world);
 
 /* Libère la mémoire associée au monde */

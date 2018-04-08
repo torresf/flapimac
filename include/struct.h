@@ -22,7 +22,7 @@ void addElementToList(Element* element, ElementList* list);
 /* Fonction qui supprime un élément d'une liste */
 void removeElementFromList(Element* element, ElementList* list);
 
-/* Vérifie si il n'y a pas de collisions entre un élément et une liste d'éléments, supprime l'élément de la 2ème liste */
+/* Vérifie si il n'y a pas de collisions entre les élémentsde deux listes différentes, si oui supprime l'élément de la 2ème liste */
 int checkIntersections(ElementList list1, ElementList* list2);
 
 /* Renvoie 1 si les deux éléments entrent en collision, 0 sinon */

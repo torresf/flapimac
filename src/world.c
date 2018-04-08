@@ -18,7 +18,7 @@ void initWorld(World *world) {
 	world->bonusList = NULL;
 }
 
-/* Libère la mémoire associée au monde */
+/* Affiche les éléments du monde : Le joueur, les obstacles, les ennemis, les bonus */
 void drawWorld(World world) {
 	drawElements(world.player);
 	drawElements(world.obstacleList);
