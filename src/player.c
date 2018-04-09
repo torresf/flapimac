@@ -27,6 +27,7 @@ void slowDown(ElementList* player) {
 /* Vérifie que le joueur est dans le fenêtre, sinon le replace dans la fenêtre */
 void movePlayer(ElementList* player) {
 	(*player)->y += (*player)->speed_y;
+	(*player)->x += (*player)->speed_x;
 }
 
 /* Vérifie que le joueur est dans le fenêtre, sinon le replace dans la fenêtre */

@@ -53,20 +53,20 @@ int main(int argc, char** argv){
 		checkPlayerPos(&world.player); // Recentre le joueur à l'intérieur si il sort de la fenêtre
 
 		/* Gestion des collisions */
-		// Supprime le joueur lorsqu'il touche un obstacle ou un ennemi et sortie de la boucle
+		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
 		if (checkIntersections(world.obstacleList, &(world.player)) || checkIntersections(world.player, &(world.enemyList))) { 
 			printf("Fin de la partie !\n");
 			break;
 		}
-		if (checkIntersections(world.player, &(world.bonusList))) { // Supprime les bonus lorsqu'ils sont récupérés par le joueur)
+		// Supprime les bonus lorsqu'ils sont récupérés par le joueur)
+		if (checkIntersections(world.player, &(world.bonusList))) {
 			printf("Bonus Récupéré !\n");
 		}
-		if (checkIntersections(world.player->missiles, &(world.enemyList))) { // Supprime les bonus lorsqu'ils sont récupérés par le joueur)
+		if (checkIntersections(world.player->missiles, &(world.enemyList))) { // Supprime un ennemie lorsqu'on lui tire dessus
 			printf("Ennemi tué !\n");
 		}
 
 		/* Affichage du plateau */
-		world.player->x += PLAYER_SPEED_X; // Le joueur avance
 		glPushMatrix();
 			glTranslatef(x_move -= PLAYER_SPEED_X, 0, 0); // Translation pour suivre le joueur
 			drawWorld(world);
@@ -75,12 +75,12 @@ int main(int argc, char** argv){
 		/* Evenement de tir */
 		if (shooting == 1){
 			// Création d'un élement missile et ajout à la liste
-			addElementToList(allocElement(4, world.player->x, world.player->y), &(world.player->missiles));
+			addElementToList(allocElement(4, world.player->x, world.player->y, PLAYER_SPEED_X * 3, 0), &(world.player->missiles));
 		}
 		/* DEPLACEMENT DES MISSILES */
 		ElementList tmp = world.player->missiles;
 		while (tmp != NULL){
-				tmp->x += PLAYER_SPEED_X * 3;
+				tmp->x += tmp->speed_x;
 				tmp = tmp->next;
 		}
 

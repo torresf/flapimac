@@ -41,7 +41,7 @@ void loadLevel(World *world) {
 	FILE *level1;
 
 	/* opening file for reading */
-	level1 = fopen("levels/level1.ppm" , "r");
+	level1 = fopen("levels/level1.ppm", "r");
 	if (level1 == NULL) {
 		perror("Error opening file");
 		return;
@@ -61,19 +61,19 @@ void loadLevel(World *world) {
 					if (r != 255 || g != 255 || b != 255) {
 						if (r == 0 && g == 0 && b == 255) {
 							/* Joueur */
-							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index), &((*world).player));
+							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index, PLAYER_SPEED_X, 0), &((*world).player));
 						}
 						if (r == 0 && g == 0 && b == 0) {
 							/* Obstacle */
-							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index), &((*world).obstacleList));
+							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0), &((*world).obstacleList));
 						}
 						if (r == 255 && g == 0 && b == 0) {
 							/* Ennemi */
-							addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index), &((*world).enemyList));
+							addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0), &((*world).enemyList));
 						}
 						if (r == 0 && g == 255 && b == 0) {
 							/* Bonus */
-							addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index), &((*world).bonusList));
+							addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0), &((*world).bonusList));
 						}
 					}
 					c_index++;

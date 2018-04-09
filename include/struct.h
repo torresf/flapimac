@@ -19,7 +19,7 @@ typedef struct element {
 } Element, *ElementList;
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x,y,r,g,b passées en paramètre et renvoie le pointeur vers cet espace mémoire */
-Element* allocElement(int type, float x, float y);
+Element* allocElement(int type, float x, float y, float speed_x, float speed_y);
 
 /* Fonction qui ajoute l'adresse d'un Element passé en paramètre à une liste chainée passée en paramètre sans valeur de retour */
 void addElementToList(Element* element, ElementList* list);

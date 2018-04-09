@@ -3,7 +3,7 @@
 /* Fonctions liées aux Elements (joueurs, obstacles, ennemis, bonus) */
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x,y,r,g,b passées en paramètre et renvoie le Elementeur vers cet espace mémoire */
-Element* allocElement(int type, float x, float y){
+Element* allocElement(int type, float x, float y, float speed_x, float speed_y) {
 	Element* element;
 	element = malloc(sizeof(Element));
 	/* Message d'erreur si l'allocation n'a pas fonctionné */
@@ -15,7 +15,8 @@ Element* allocElement(int type, float x, float y){
 	element->type = type;
 	element->x = x;
 	element->y = y;
-	element->speed_y = 0;
+	element->speed_x = speed_x;
+	element->speed_y = speed_y;
 	element->next = NULL;
 	return element;
 }
@@ -40,7 +41,7 @@ void removeElementFromList(Element* element, ElementList* list) {
 			Element *tmp = *list;
 			*list = (*list)->next;
 			free(tmp);
-		} else{
+		} else {
 			Element *tmp = (*list)->next;
 			Element *prev = *list;
 			while (element != tmp) {
