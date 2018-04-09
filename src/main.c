@@ -16,16 +16,18 @@ int main(int argc, char** argv){
 	SDL_WM_SetCaption("Flapimac", NULL);
 	resizeViewport();
 
-	glClearColor(0.1, 0.1, 0.1, 1.0);
+	glClearColor(0.5, 0.5, 0.5, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	World world;
 	initWorld(&world);
-	loadLevel(&world);	
+	loadLevel(&world);
 	
 	int player_status = 0;
 	int loop = 1;
 	float x_move = 0;
+
+	int shooting = 0;
 
 	/* Boucle d'affichage */
 	while(loop) {
@@ -53,11 +55,14 @@ int main(int argc, char** argv){
 		/* Gestion des collisions */
 		// Supprime le joueur lorsqu'il touche un obstacle ou un ennemi et sortie de la boucle
 		if (checkIntersections(world.obstacleList, &(world.player)) || checkIntersections(world.player, &(world.enemyList))) { 
-			printf("Fin de la partie\n");
+			printf("Fin de la partie !\n");
 			break;
 		}
 		if (checkIntersections(world.player, &(world.bonusList))) { // Supprime les bonus lorsqu'ils sont récupérés par le joueur)
 			printf("Bonus Récupéré !\n");
+		}
+		if (checkIntersections(world.player->missiles, &(world.enemyList))) { // Supprime les bonus lorsqu'ils sont récupérés par le joueur)
+			printf("Ennemi tué !\n");
 		}
 
 		/* Affichage du plateau */
@@ -66,6 +71,18 @@ int main(int argc, char** argv){
 			glTranslatef(x_move -= PLAYER_SPEED_X, 0, 0); // Translation pour suivre le joueur
 			drawWorld(world);
 		glPopMatrix();
+
+		/* Evenement de tir */
+		if (shooting == 1){
+			// Création d'un élement missile et ajout à la liste
+			addElementToList(allocElement(4, world.player->x, world.player->y), &(world.player->missiles));
+		}
+		/* DEPLACEMENT DES MISSILES */
+		ElementList tmp = world.player->missiles;
+		while (tmp != NULL){
+				tmp->x += PLAYER_SPEED_X * 3;
+				tmp = tmp->next;
+		}
 
 		/* Boucle traitant les evenements */
 		SDL_Event e;
@@ -77,7 +94,7 @@ int main(int argc, char** argv){
 				break;
 			}
 			
-			/* Quelques exemples de traitement d'evenements : */
+			/* Traitement d'evenements : */
 			switch(e.type) {
 
 				/* Touche clavier */
@@ -100,6 +117,7 @@ int main(int argc, char** argv){
 						case SDLK_SPACE:
 							// Déclenchement du tir
 							printf("Début Tir\n");
+							shooting = 1;
 							break;
 
 						default:
@@ -124,6 +142,7 @@ int main(int argc, char** argv){
 							break;
 
 						case SDLK_SPACE:
+							shooting = 0;
 							printf("Fin tir\n");
 							break;
 

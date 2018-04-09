@@ -6,11 +6,16 @@
 #include <GL/gl.h>
 #include "display.h"
 
+typedef struct point {
+    float x, y; // Coordonnées du point
+} Point;
+
 typedef struct element {
-	int type; // Type de l'élément (0: Player, 1: Obstacle, 2: Enemy, 3: Bonus)
+	int type; // Type de l'élément (0: Player, 1: Obstacle, 2: Enemy, 3: Bonus, 4: Missile)
 	float x, y; // Coordonnées de l'élément
-	float speed; // Vitesse de l'élément
+	float speed_y, speed_x; // Vitesse de l'élément
 	struct element* next; // Elément suivant
+	struct element* missiles; // Liste chainée de missiles
 } Element, *ElementList;
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x,y,r,g,b passées en paramètre et renvoie le pointeur vers cet espace mémoire */

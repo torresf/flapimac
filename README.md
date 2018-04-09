@@ -3,9 +3,9 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 
 
 # A faire
-- [ ] Créer structure Monde
-- [ ] function initWorld()
-- [ ] 
+- [x] Créer structure Monde
+- [x] function initWorld()
+- [ ] Implémenter les missiles
 - [ ] 
 
 # Idées améliorations

@@ -24,6 +24,8 @@ void drawWorld(World world) {
 	drawElements(world.obstacleList);
 	drawElements(world.enemyList);
 	drawElements(world.bonusList);
+	if (world.player->missiles)
+		drawElements(world.player->missiles);
 }
 
 /* Libère la mémoire associée au monde */

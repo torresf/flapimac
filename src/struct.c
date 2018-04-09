@@ -15,7 +15,7 @@ Element* allocElement(int type, float x, float y){
 	element->type = type;
 	element->x = x;
 	element->y = y;
-	element->speed = 0;
+	element->speed_y = 0;
 	element->next = NULL;
 	return element;
 }
