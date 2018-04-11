@@ -28,7 +28,7 @@ int main(int argc, char** argv){
 	float x_move = 0;
 
 	int shooting = 0;
-	int loaded = 15;
+	int loaded = world.player->shooting_rate;
 
 	/* Boucle d'affichage */
 	while(loop) {
@@ -53,9 +53,10 @@ int main(int argc, char** argv){
 		movePlayer(&world.player); // Applique les transformations de positions au joueur
 		checkPlayerPos(&world.player); // Recentre le joueur à l'intérieur si il sort de la fenêtre
 
+
 		/* Gestion des collisions */
 		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
-		if (checkIntersections(world.obstacleList, &(world.player)) || checkIntersections(world.player, &(world.enemyList))) { 
+		if (checkIntersections(world.player, &(world.obstacleList)) || checkIntersections(world.player, &(world.enemyList))) { 
 			printf("Partie perdu. Sortie du programme.\n");
 			break;
 		}
@@ -69,6 +70,7 @@ int main(int argc, char** argv){
 		// Supprime les bonus lorsqu'ils sont récupérés par le joueur)
 		if (checkIntersections(world.player, &(world.bonusList))) {
 			printf("Bonus Récupéré !\n");
+			world.player->nb_bonus++;
 		}
 
 		// Supprime un ennemi lorsqu'on lui tire dessus
@@ -79,31 +81,24 @@ int main(int argc, char** argv){
 		// Permet de détruire les obsacles
 		checkIntersections(world.player->missiles, &(world.obstacleList));
 
-		/* Affichage du plateau */
-		glPushMatrix();
-			glTranslatef(x_move -= PLAYER_SPEED_X, 0, 0); // Translation pour suivre le joueur
-			drawWorld(world);
-		glPopMatrix();
+		checkBonus(&world.player);
 
 		/* Evenement de tir */
-		if (shooting == 1 && loaded >= 15) {
+		if (shooting == 1 && loaded >= world.player->shooting_rate) {
 			// Création d'un élement missile et ajout à la liste
-			addElementToList(allocElement(4, world.player->x, world.player->y, PLAYER_SPEED_X * 3, 0), &(world.player->missiles));
+			addElementToList(allocElement(4, world.player->x, world.player->y, PLAYER_SPEED_X * 3, 0, 0, 0), &(world.player->missiles));
 			loaded = 0;
 		}
 		loaded++;
 		
 		/* DEPLACEMENT DES MISSILES */
-		ElementList tmp = world.player->missiles;
-		while (tmp != NULL){
-			if (tmp->x > world.player->x + SHOOTING_RANGE) {
-				ElementList tmp2 = tmp;
-				removeElementFromList(tmp2, &(world.player->missiles));
-			} else {
-				tmp->x += tmp->speed_x;
-			}
-			tmp = tmp->next;
-		}
+		moveMissiles(&(world.player));
+
+		/* Affichage du plateau */
+		glPushMatrix();
+			glTranslatef(x_move -= PLAYER_SPEED_X, 0, 0); // Translation du monde pour suivre le joueur
+			drawWorld(world);
+		glPopMatrix();
 
 		/* Boucle traitant les evenements */
 		SDL_Event e;

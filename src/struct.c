@@ -3,7 +3,7 @@
 /* Fonctions liées aux Elements (joueurs, obstacles, ennemis, bonus) */
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x,y,r,g,b passées en paramètre et renvoie le Elementeur vers cet espace mémoire */
-Element* allocElement(int type, float x, float y, float speed_x, float speed_y) {
+Element* allocElement(int type, float x, float y, float speed_x, float speed_y, int shooting_range, int shooting_rate) {
 	Element* element;
 	element = malloc(sizeof(Element));
 	/* Message d'erreur si l'allocation n'a pas fonctionné */
@@ -17,6 +17,9 @@ Element* allocElement(int type, float x, float y, float speed_x, float speed_y) 
 	element->y = y;
 	element->speed_x = speed_x;
 	element->speed_y = speed_y;
+	element->nb_bonus = 0;
+	element->shooting_range = shooting_range;
+	element->shooting_rate = shooting_rate;
 	element->next = NULL;
 	element->missiles = NULL;
 	return element;

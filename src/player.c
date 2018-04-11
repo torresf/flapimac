@@ -41,3 +41,26 @@ void checkPlayerPos(ElementList* player) {
 		(*player)->speed_y = 0;
 	}
 }
+
+/* Défini les améliorations du joueur en fonction du nombre de bonus récupérés */
+void checkBonus(ElementList* player) {
+	if ((*player)->nb_bonus == 1) {
+		(*player)->shooting_range = 10;
+	} else if ((*player)->nb_bonus == 2) {
+		(*player)->shooting_rate = 7;
+	}
+}
+
+/* Fonctions relatives aux missiles */
+void moveMissiles(ElementList* player) {
+	ElementList tmp = (*player)->missiles;
+	while (tmp != NULL) {
+		if (tmp->x > (*player)->x + (*player)->shooting_range) {
+			ElementList tmp2 = tmp;
+			removeElementFromList(tmp2, &((*player)->missiles));
+		} else {
+			tmp->x += tmp->speed_x;
+		}
+		tmp = tmp->next;
+	}
+}
