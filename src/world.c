@@ -11,11 +11,11 @@ void resizeViewport() {
 
 /* Initialise les champs et listes chainées du monde */
 void initWorld(World *world) {
-	world->score = 0;
 	world->player = NULL;
 	world->obstacleList = NULL;
 	world->enemyList = NULL;
 	world->bonusList = NULL;
+	world->finishLineList = NULL;
 }
 
 /* Affiche les éléments du monde : Le joueur, les obstacles, les ennemis, les bonus */
@@ -24,16 +24,21 @@ void drawWorld(World world) {
 	drawElements(world.obstacleList);
 	drawElements(world.enemyList);
 	drawElements(world.bonusList);
+	drawElements(world.finishLineList);
 	if (world.player->missiles)
 		drawElements(world.player->missiles);
 }
 
 /* Libère la mémoire associée au monde */
 void deleteWorld(World *world) {
+	if ((*world).player->missiles)
+		deleteElements(&((*world).player)->missiles);
 	deleteElements(&((*world).player));
 	deleteElements(&((*world).obstacleList));
 	deleteElements(&((*world).enemyList));
 	deleteElements(&((*world).bonusList));
+	deleteElements(&((*world).finishLineList));
+	
 }
 
 /* Chargement du niveau */
@@ -74,6 +79,10 @@ void loadLevel(World *world) {
 						if (r == 0 && g == 255 && b == 0) {
 							/* Bonus */
 							addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0), &((*world).bonusList));
+						}
+						if (r == 255 && g == 255 && b == 0) {
+							/* Ligne d'arrivée */
+							addElementToList(allocElement(5, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0), &((*world).finishLineList));
 						}
 					}
 					c_index++;

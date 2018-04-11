@@ -18,6 +18,7 @@ Element* allocElement(int type, float x, float y, float speed_x, float speed_y) 
 	element->speed_x = speed_x;
 	element->speed_y = speed_y;
 	element->next = NULL;
+	element->missiles = NULL;
 	return element;
 }
 
@@ -34,7 +35,7 @@ void addElementToList(Element* element, ElementList* list) {
 	*list = tmpList;
 }
 
-/* Fonction qui ajoute l'adresse d'un Element passé en paramètre à une liste chainée passée en paramètre sans valeur de retour */
+/* Fonction qui supprime un Element passé en paramètre d'une liste chainée passée en paramètre sans valeur de retour */
 void removeElementFromList(Element* element, ElementList* list) {
 	if (*list) {
 		if (element == *list) {
@@ -56,16 +57,18 @@ void removeElementFromList(Element* element, ElementList* list) {
 
 /* Vérifie si il n'y a pas de collisions entre les élémentsde deux listes différentes, si oui supprime l'élément de la 2ème liste */
 int checkIntersections(ElementList list1, ElementList* list2) {
-	ElementList tmp = *list2;
-	while (tmp) {
+	ElementList tmp1 = list1;
+	ElementList tmp2 = *list2;
+	while (tmp2) {
 		while (list1) {
-			if (collided(*list1, *tmp) == 1) {
-				removeElementFromList(tmp, list2);
+			if (collided(*list1, *tmp2) == 1) {
+				removeElementFromList(tmp2, list2);
 				return 1;
 			}
 			list1 = list1->next;
 		}
-		tmp = tmp->next;
+		list1 = tmp1;
+		tmp2 = tmp2->next;
 	}
 	return 0;
 }
@@ -94,6 +97,13 @@ void drawElements(ElementList list) {
 				r = 255;
 				break;
 			case 3:
+				g = 255;
+				break;
+			case 4:
+				b = 255;
+				break;
+			case 5:
+				r = 255;
 				g = 255;
 				break;
 			default:

@@ -28,6 +28,7 @@ int main(int argc, char** argv){
 	float x_move = 0;
 
 	int shooting = 0;
+	int loaded = 15;
 
 	/* Boucle d'affichage */
 	while(loop) {
@@ -55,16 +56,28 @@ int main(int argc, char** argv){
 		/* Gestion des collisions */
 		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
 		if (checkIntersections(world.obstacleList, &(world.player)) || checkIntersections(world.player, &(world.enemyList))) { 
-			printf("Fin de la partie !\n");
+			printf("Partie perdu. Sortie du programme.\n");
 			break;
 		}
+
+		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
+		if (checkIntersections(world.player, &(world.finishLineList))) { 
+			printf("Niveau terminé !\n");
+			break;
+		}
+
 		// Supprime les bonus lorsqu'ils sont récupérés par le joueur)
 		if (checkIntersections(world.player, &(world.bonusList))) {
 			printf("Bonus Récupéré !\n");
 		}
-		if (checkIntersections(world.player->missiles, &(world.enemyList))) { // Supprime un ennemie lorsqu'on lui tire dessus
+
+		// Supprime un ennemi lorsqu'on lui tire dessus
+		if (checkIntersections(world.player->missiles, &(world.enemyList))) { 
 			printf("Ennemi tué !\n");
 		}
+		
+		// Permet de détruire les obsacles
+		checkIntersections(world.player->missiles, &(world.obstacleList));
 
 		/* Affichage du plateau */
 		glPushMatrix();
@@ -73,15 +86,23 @@ int main(int argc, char** argv){
 		glPopMatrix();
 
 		/* Evenement de tir */
-		if (shooting == 1){
+		if (shooting == 1 && loaded >= 15) {
 			// Création d'un élement missile et ajout à la liste
 			addElementToList(allocElement(4, world.player->x, world.player->y, PLAYER_SPEED_X * 3, 0), &(world.player->missiles));
+			loaded = 0;
 		}
+		loaded++;
+		
 		/* DEPLACEMENT DES MISSILES */
 		ElementList tmp = world.player->missiles;
 		while (tmp != NULL){
+			if (tmp->x > world.player->x + SHOOTING_RANGE) {
+				ElementList tmp2 = tmp;
+				removeElementFromList(tmp2, &(world.player->missiles));
+			} else {
 				tmp->x += tmp->speed_x;
-				tmp = tmp->next;
+			}
+			tmp = tmp->next;
 		}
 
 		/* Boucle traitant les evenements */
@@ -116,7 +137,6 @@ int main(int argc, char** argv){
 
 						case SDLK_SPACE:
 							// Déclenchement du tir
-							printf("Début Tir\n");
 							shooting = 1;
 							break;
 
@@ -143,7 +163,6 @@ int main(int argc, char** argv){
 
 						case SDLK_SPACE:
 							shooting = 0;
-							printf("Fin tir\n");
 							break;
 
 						default:

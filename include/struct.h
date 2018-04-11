@@ -13,7 +13,7 @@ typedef struct point {
 typedef struct element {
 	int type; // Type de l'élément (0: Player, 1: Obstacle, 2: Enemy, 3: Bonus, 4: Missile)
 	float x, y; // Coordonnées de l'élément
-	float speed_y, speed_x; // Vitesse de l'élément
+	float speed_x, speed_y; // Vitesse de l'élément
 	struct element* next; // Elément suivant
 	struct element* missiles; // Liste chainée de missiles
 } Element, *ElementList;

@@ -9,6 +9,9 @@
 #define MAX_SPEED 0.25
 #define ACC 0.03
 
+static unsigned int SHOOTING_RANGE = 7; // Portée de tir
+static float PLAYER_SPEED_X = 0.1; // Vitesse horizontale du joueur
+
 /* Déplacement du joueur vers le haut */
 void moveUp(ElementList* player);
 
