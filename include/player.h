@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <GL/gl.h>
 #include "struct.h"
+#include "display.h"
 
 #define MAX_SPEED 0.25
 #define ACC 0.03
@@ -26,7 +27,7 @@ void movePlayer(ElementList* player);
 /* Vérifie que le joueur est dans le fenêtre, sinon le replace dans la fenêtre */
 void checkPlayerPos(ElementList* player);
 
-/* Défini les améliorations du joueur en fonction du nombre de bonus récupérés */
+/* Défini les propriétés du joueur en fonction du nombre de bonus récupérés */
 void checkBonus(ElementList* player);
 
 

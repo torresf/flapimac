@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <GL/gl.h>
-#include "display.h"
 
 typedef struct point {
     float x, y; // Coordonnées du point
@@ -35,9 +34,6 @@ int checkIntersections(ElementList list1, ElementList* list2);
 
 /* Renvoie 1 si les deux éléments entrent en collision, 0 sinon */
 int collided(Element a, Element b);
-
-/* Fonction qui dessine les Elements de la liste passée en paramètre sans valeur de retour */
-void drawElements(ElementList list);
 
 /* Fonction qui vide la mémoire de tous les Elements de la liste passée en paramètre sans valeur de retour */
 void deleteElements(ElementList* list);

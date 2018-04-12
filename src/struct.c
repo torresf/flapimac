@@ -81,46 +81,6 @@ int collided(Element a, Element b) {
 	return (abs(a.x - b.x) * 2 < 2) && (abs(a.y - b.y) * 2 < 2);
 }
 
-/* Fonction qui dessine les Elements de la liste passée en paramètre sans valeur de retour */
-void drawElements(ElementList list) {
-	int r, g, b;
-	r = 0;
-	g = 0;
-	b = 0;
-	while (list) {
-		switch (list->type){
-			case 0:
-				b = 255;
-				r = 255;
-				g = 255;
-				break;
-			case 1:
-				break;
-			case 2:
-				r = 255;
-				break;
-			case 3:
-				g = 255;
-				break;
-			case 4:
-				b = 255;
-				break;
-			case 5:
-				r = 255;
-				g = 255;
-				break;
-			default:
-				break;
-		}
-		glColor3ub(r, g, b);
-		glPushMatrix();
-			glTranslatef(list->x, list->y, 0);
-			drawSquare(1);
-		glPopMatrix();
-		list = list->next;
-	}
-}
-
 /* Fonction qui vide la mémoire de tous les Elements de la liste passée en paramètre sans valeur de retour */
 void deleteElements(ElementList* list){
 	while (*list) {

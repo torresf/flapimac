@@ -25,3 +25,43 @@ void drawSquare(int full) {
         glVertex2f(1, 0);
     glEnd();
 }
+
+/* Fonction qui dessine les Elements de la liste passée en paramètre sans valeur de retour */
+void drawElements(ElementList list) {
+    int r, g, b;
+    r = 0;
+    g = 0;
+    b = 0;
+    while (list) {
+        switch (list->type){
+            case 0:
+                b = 255;
+                r = 255;
+                g = 255;
+                break;
+            case 1:
+                break;
+            case 2:
+                r = 255;
+                break;
+            case 3:
+                g = 255;
+                break;
+            case 4:
+                b = 255;
+                break;
+            case 5:
+                r = 255;
+                g = 255;
+                break;
+            default:
+                break;
+        }
+        glColor3ub(r, g, b);
+        glPushMatrix();
+            glTranslatef(list->x, list->y, 0);
+            drawSquare(1);
+        glPopMatrix();
+        list = list->next;
+    }
+}

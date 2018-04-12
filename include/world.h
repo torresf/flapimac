@@ -1,9 +1,9 @@
 #ifndef WORLD_H
 	#define WORLD_H
 
-#include "display.h"
 #include "struct.h"
 #include "player.h"
+#include "display.h"
 
 #define MAX_SIZE 2000
 
