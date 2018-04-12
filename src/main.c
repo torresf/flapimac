@@ -25,8 +25,6 @@ int main(int argc, char** argv){
 	
 	int player_status = 0;
 	int loop = 1;
-	float x_move = 0;
-
 	int shooting = 0;
 	int loaded = world.player->shooting_rate;
 
@@ -91,12 +89,12 @@ int main(int argc, char** argv){
 		}
 		loaded++;
 		
-		/* DEPLACEMENT DES MISSILES */
+		/* Déplacement des missiles */
 		moveMissiles(&(world.player));
 
 		/* Affichage du plateau */
 		glPushMatrix();
-			glTranslatef(x_move -= PLAYER_SPEED_X, 0, 0); // Translation du monde pour suivre le joueur
+			glTranslatef(2 - world.player->x, 0, 0); // Translation du monde pour suivre le joueur
 			drawWorld(world);
 		glPopMatrix();
 

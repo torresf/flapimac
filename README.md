@@ -1,4 +1,4 @@
-# flapimac
+# Flapimac
 Jeu en OpenGL développé par Tom Samaille et Florian Torres
 
 
@@ -12,7 +12,6 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 
 # Idées améliorations
 - [ ] Déplacement gauche/droite
-- [ ] Vidéo "t'es mauvais Jack" si le joueur perd au début
 - [ ] Gestion du score
 - [ ] Ajouts de Bonus / Malus / Coefficients aléatoires
 - [ ] Différents ennemis / obstacles (destructibles...) / projectiles
@@ -20,3 +19,4 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 - [ ] Boss de fin
 - [ ] Multijoueur
 - [ ] Plusieurs niveaux
+- [ ] Vidéo "t'es mauvais Jack" si le joueur perd au début -> gif ?
