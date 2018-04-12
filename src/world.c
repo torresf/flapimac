@@ -66,7 +66,7 @@ void loadLevel(World *world) {
 					if (r != 255 || g != 255 || b != 255) {
 						if (r == 0 && g == 0 && b == 255) {
 							/* Joueur */
-							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index, PLAYER_SPEED_X, 0, 3, 30), &((*world).player));
+							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index, 0.1, 0, 3, 30), &((*world).player));
 						}
 						if (r == 0 && g == 0 && b == 0) {
 							/* Obstacle */

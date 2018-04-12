@@ -20,3 +20,4 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 - [ ] Multijoueur
 - [ ] Plusieurs niveaux
 - [ ] Vidéo "t'es mauvais Jack" si le joueur perd au début -> gif ?
+- [ ] Bande de couleur : Accélération du joueur jusqu'à la prochaine bande / pendant un temps imparti

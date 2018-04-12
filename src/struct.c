@@ -2,7 +2,7 @@
 
 /* Fonctions liées aux Elements (joueurs, obstacles, ennemis, bonus) */
 
-/* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x,y,r,g,b passées en paramètre et renvoie le Elementeur vers cet espace mémoire */
+/* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x, y, speed_x, speed_y, shooting_range, shooting_rate passées en paramètre et renvoie le pointeur vers cet espace mémoire Element */
 Element* allocElement(int type, float x, float y, float speed_x, float speed_y, int shooting_range, int shooting_rate) {
 	Element* element;
 	element = malloc(sizeof(Element));

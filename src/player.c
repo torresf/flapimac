@@ -48,6 +48,7 @@ void checkBonus(ElementList* player) {
 		(*player)->shooting_range = 10;
 	} else if ((*player)->nb_bonus == 2) {
 		(*player)->shooting_rate = 15;
+		(*player)->speed_x = 0.2;
 	}
 }
 
