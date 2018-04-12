@@ -32,4 +32,7 @@ void checkBonus(ElementList* player);
 /* Fonctions relatives aux missiles */
 void moveMissiles(ElementList* player);
 
+/* Fonctions relatives aux missiles */
+void moveBonus(ElementList* bonusList);
+
 #endif

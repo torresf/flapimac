@@ -31,14 +31,11 @@ void drawWorld(World world) {
 
 /* Libère la mémoire associée au monde */
 void deleteWorld(World *world) {
-	if ((*world).player->missiles)
-		deleteElements(&((*world).player)->missiles);
 	deleteElements(&((*world).player));
 	deleteElements(&((*world).obstacleList));
 	deleteElements(&((*world).enemyList));
 	deleteElements(&((*world).bonusList));
 	deleteElements(&((*world).finishLineList));
-	
 }
 
 /* Chargement du niveau */
@@ -66,7 +63,7 @@ void loadLevel(World *world) {
 					if (r != 255 || g != 255 || b != 255) {
 						if (r == 0 && g == 0 && b == 255) {
 							/* Joueur */
-							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index, 0.1, 0, 3, 30), &((*world).player));
+							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index, 0.05, 0, 3, 30), &((*world).player));
 						}
 						if (r == 0 && g == 0 && b == 0) {
 							/* Obstacle */
@@ -78,7 +75,7 @@ void loadLevel(World *world) {
 						}
 						if (r == 0 && g == 255 && b == 0) {
 							/* Bonus */
-							addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0), &((*world).bonusList));
+							addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0.1, 0, 0), &((*world).bonusList));
 						}
 						if (r == 255 && g == 255 && b == 0) {
 							/* Ligne d'arrivée */

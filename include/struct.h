@@ -35,7 +35,7 @@ int checkIntersections(ElementList list1, ElementList* list2);
 /* Renvoie 1 si les deux éléments entrent en collision, 0 sinon */
 int collided(Element a, Element b);
 
-/* Fonction qui vide la mémoire de tous les Elements de la liste passée en paramètre sans valeur de retour */
+/* Fonction qui vide la mémoire de tous les éléments de la liste passée en paramètre sans valeur de retour. Supprime d'abord les missiles de la listes si il y en a */
 void deleteElements(ElementList* list);
 
 #endif

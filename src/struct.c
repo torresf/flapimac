@@ -78,14 +78,18 @@ int checkIntersections(ElementList list1, ElementList* list2) {
 
 /* Renvoie 1 si les deux éléments entrent en collision, 0 sinon */
 int collided(Element a, Element b) {
-	return (abs(a.x - b.x) * 2 < 2) && (abs(a.y - b.y) * 2 < 2);
+	return (abs(a.x - b.x) * 2 < 2) && (abs(a.y - b.y) * 2 < 2); // "2" correpond à la somme des hauteurs et à la somme des largeurs
 }
 
-/* Fonction qui vide la mémoire de tous les Elements de la liste passée en paramètre sans valeur de retour */
-void deleteElements(ElementList* list){
-	while (*list) {
-		ElementList next = (*list)->next;
-		free(*list);
-		*list = next;
+/* Fonction qui vide la mémoire de tous les éléments de la liste passée en paramètre sans valeur de retour. Supprime d'abord les missiles de la listes si il y en a */
+void deleteElements(ElementList* list) {
+	if (*list != NULL) {
+		if ((*list)->missiles != NULL)
+			deleteElements(&((*list)->missiles));
+		while (*list) {
+			ElementList next = (*list)->next;
+			free(*list);
+			*list = next;
+		}
 	}
 }

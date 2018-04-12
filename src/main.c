@@ -76,8 +76,8 @@ int main(int argc, char** argv){
 			printf("Ennemi tué !\n");
 		}
 		
-		// Permet de détruire les obsacles
-		checkIntersections(world.player->missiles, &(world.obstacleList));
+		// Détruit un missile lorsqu'il touche un ennemi
+		checkIntersections(world.obstacleList, &(world.player->missiles));
 
 		checkBonus(&world.player);
 
@@ -91,6 +91,11 @@ int main(int argc, char** argv){
 		
 		/* Déplacement des missiles */
 		moveMissiles(&(world.player));
+
+		if (world.bonusList)
+		{
+			moveBonus(&(world.bonusList));
+		}
 
 		/* Affichage du plateau */
 		glPushMatrix();

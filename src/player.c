@@ -47,8 +47,8 @@ void checkBonus(ElementList* player) {
 	if ((*player)->nb_bonus == 1) {
 		(*player)->shooting_range = 10;
 	} else if ((*player)->nb_bonus == 2) {
-		(*player)->shooting_rate = 15;
-		(*player)->speed_x = 0.2;
+		(*player)->shooting_rate = 10;
+		(*player)->shooting_range = 20;
 	}
 }
 
@@ -62,6 +62,18 @@ void moveMissiles(ElementList* player) {
 		} else {
 			tmp->x += tmp->speed_x;
 		}
+		tmp = tmp->next;
+	}
+}
+
+/* Fonctions relatives aux missiles */
+void moveBonus(ElementList* bonusList) {
+	ElementList tmp = *bonusList;
+	while (tmp) {
+		if (tmp->y >= NB_UNITS_Y - 1 || tmp->y <= 0) {
+			tmp->speed_y = -tmp->speed_y;
+		}
+		tmp->y += tmp->speed_y;
 		tmp = tmp->next;
 	}
 }
