@@ -19,10 +19,10 @@ void drawSquare(int full) {
     GLenum primitiveType = full ? GL_QUADS : GL_LINE_LOOP;
 
     glBegin(primitiveType);
-        glVertex2f(0, 0);
-        glVertex2f(0, 1);
-        glVertex2f(1, 1);
-        glVertex2f(1, 0);
+        glVertex2f(-0.5, -0.5);
+        glVertex2f(-0.5,  0.5);
+        glVertex2f( 0.5,  0.5);
+        glVertex2f( 0.5, -0.5);
     glEnd();
 }
 
@@ -59,7 +59,9 @@ void drawElements(ElementList list) {
         }
         glColor3ub(r, g, b);
         glPushMatrix();
-            glTranslatef(list->x, list->y, 0);
+            glTranslatef(0.5 + list->x, 0.5 + list->y, 0);
+            if (list->type == 0)
+                glRotatef(list->speed_y * 60, 0, 0, 1);
             drawSquare(1);
         glPopMatrix();
         list = list->next;
