@@ -53,22 +53,34 @@ void checkBonus(ElementList* player) {
 }
 
 /* Fonctions relatives aux missiles */
-void moveMissiles(ElementList* player) {
-	ElementList tmp = (*player)->missiles;
+void moveMissiles(ElementList* shooter) {
+	ElementList tmp = (*shooter)->missiles;
 	while (tmp != NULL) {
-		if (tmp->x > (*player)->x + (*player)->shooting_range) {
-			ElementList tmp2 = tmp;
-			removeElementFromList(tmp2, &((*player)->missiles));
+		// Destruction du missile lorsqu'il dépasse la portée du joueur
+		if ((*shooter)->type  == 2)
+		{
+			if (tmp->x < (*shooter)->x + (*shooter)->shooting_range) {
+				ElementList tmp2 = tmp;
+				removeElementFromList(tmp2, &((*shooter)->missiles));
+			} else {
+				tmp->x += tmp->speed_x;
+			}
 		} else {
-			tmp->x += tmp->speed_x;
+			if (tmp->x > (*shooter)->x + (*shooter)->shooting_range) {
+				ElementList tmp2 = tmp;
+				removeElementFromList(tmp2, &((*shooter)->missiles));
+			} else {
+				tmp->x += tmp->speed_x;
+			}
 		}
+		
 		tmp = tmp->next;
 	}
 }
 
-/* Fonctions relatives aux missiles */
-void moveBonus(ElementList* bonusList) {
-	ElementList tmp = *bonusList;
+/* Fonctions relatives aux bonus */
+void moveVertical(ElementList* list) {
+	ElementList tmp = *list;
 	while (tmp) {
 		if (tmp->y >= NB_UNITS_Y - 1 || tmp->y <= 0) {
 			tmp->speed_y = -tmp->speed_y;

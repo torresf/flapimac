@@ -27,6 +27,7 @@ int main(int argc, char** argv){
 	int loop = 1;
 	int shooting = 0;
 	int loaded = world.player->shooting_rate;
+	int enemy_loaded = 0;
 
 	/* Boucle d'affichage */
 	while(loop) {
@@ -51,6 +52,16 @@ int main(int argc, char** argv){
 		movePlayer(&world.player); // Applique les transformations de positions au joueur
 		checkPlayerPos(&world.player); // Recentre le joueur à l'intérieur si il sort de la fenêtre
 
+		/* Déplacement des missiles */
+		moveMissiles(&(world.player));
+
+		if (world.enemyList) {
+			moveVertical(&(world.enemyList));
+			moveMissiles(&(world.enemyList));
+		}
+
+		if (world.bonusList)
+			moveVertical(&(world.bonusList));
 
 		/* Gestion des collisions */
 		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
@@ -58,43 +69,48 @@ int main(int argc, char** argv){
 			printf("Partie perdu. Sortie du programme.\n");
 			break;
 		}
-
+		if (world.enemyList) {
+			if (checkIntersections(world.player, &(world.enemyList->missiles))) { 
+				printf("Touché par ennemi.\n");
+				break;
+			}
+		}
+		
 		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
 		if (checkIntersections(world.player, &(world.finishLineList))) { 
 			printf("Niveau terminé !\n");
 			break;
 		}
-
 		// Supprime les bonus lorsqu'ils sont récupérés par le joueur)
 		if (checkIntersections(world.player, &(world.bonusList))) {
 			printf("Bonus Récupéré !\n");
 			world.player->nb_bonus++;
 		}
-
 		// Supprime un ennemi lorsqu'on lui tire dessus
 		if (checkIntersections(world.player->missiles, &(world.enemyList))) { 
 			printf("Ennemi tué !\n");
 		}
-		
-		// Détruit un missile lorsqu'il touche un ennemi
+		// Détruit un missile lorsqu'il touche un obstacle
 		checkIntersections(world.obstacleList, &(world.player->missiles));
-
+		
+		// Calcul les caractéristiques du joueur en fonction du nombre de bonus
 		checkBonus(&world.player);
 
 		/* Evenement de tir */
 		if (shooting == 1 && loaded >= world.player->shooting_rate) {
 			// Création d'un élement missile et ajout à la liste
-			addElementToList(allocElement(4, world.player->x, world.player->y, world.player->speed_x + 0.2, 0, 0, 0), &(world.player->missiles));
+			addElementToList(allocElement(4, world.player->x+1, world.player->y, world.player->speed_x + 0.2, 0, 0, 0), &(world.player->missiles));	
 			loaded = 0;
 		}
 		loaded++;
 		
-		/* Déplacement des missiles */
-		moveMissiles(&(world.player));
-
-		if (world.bonusList)
-		{
-			moveBonus(&(world.bonusList));
+		if (world.enemyList) {
+			if (enemy_loaded >= world.enemyList->shooting_rate) {
+					// Création d'un élement missile et ajout à la liste
+					addElementToList(allocElement(4, world.enemyList->x-1, world.enemyList->y, -0.2, 0, 0, 0), &(world.enemyList->missiles));
+				enemy_loaded = 0;
+			}
+			enemy_loaded++;
 		}
 
 		/* Affichage du plateau */

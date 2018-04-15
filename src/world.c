@@ -27,6 +27,8 @@ void drawWorld(World world) {
 	drawElements(world.finishLineList);
 	if (world.player->missiles)
 		drawElements(world.player->missiles);
+	if (world.enemyList && world.enemyList->missiles)
+		drawElements(world.enemyList->missiles);
 }
 
 /* Libère la mémoire associée au monde */
@@ -63,7 +65,7 @@ void loadLevel(World *world) {
 					if (r != 255 || g != 255 || b != 255) {
 						if (r == 0 && g == 0 && b == 255) {
 							/* Joueur */
-							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index, 0.05, 0, 3, 30), &((*world).player));
+							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index, 0.05, 0, 5, 30), &((*world).player));
 						}
 						if (r == 0 && g == 0 && b == 0) {
 							/* Obstacle */
@@ -71,7 +73,7 @@ void loadLevel(World *world) {
 						}
 						if (r == 255 && g == 0 && b == 0) {
 							/* Ennemi */
-							addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0), &((*world).enemyList));
+							addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0.02, -4, 30), &((*world).enemyList));
 						}
 						if (r == 0 && g == 255 && b == 0) {
 							/* Bonus */

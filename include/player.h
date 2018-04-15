@@ -30,9 +30,9 @@ void checkBonus(ElementList* player);
 
 
 /* Fonctions relatives aux missiles */
-void moveMissiles(ElementList* player);
+void moveMissiles(ElementList* shooter);
 
 /* Fonctions relatives aux missiles */
-void moveBonus(ElementList* bonusList);
+void moveVertical(ElementList* list);
 
 #endif
