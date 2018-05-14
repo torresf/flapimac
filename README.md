@@ -9,15 +9,20 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 - [ ] Ajouter des textures
 - [ ] Créer des obstacles complexes
 - [ ] Créer plusieurs niveaux
+- [ ] Menu
+- [ ] Ecrans intermédiaire niveaux
+- [ ] Ecran de fin
 
 # Idées améliorations
-- [ ] Déplacement gauche/droite
-- [ ] Gestion du score
-- [ ] Ajouts de Bonus / Malus / Coefficients aléatoires
+- [ ] Gestion du score 
+- [ ] Vie du joueur
+- [ ] Ajouts de Bonus / Malus personnalisés
+- [ ] Coefficients aléatoires
 - [ ] Différents ennemis / obstacles (destructibles...) / projectiles
-- [ ] Ajout de barre de vie pour les ennemis / obstacles
 - [ ] Boss de fin
-- [ ] Multijoueur
+- [ ] Ajout de barre de vie pour le boss de fin
 - [ ] Plusieurs niveaux
-- [ ] Vidéo "t'es mauvais Jack" si le joueur perd au début -> gif ?
 - [ ] Bande de couleur : Accélération du joueur jusqu'à la prochaine bande / pendant un temps imparti
+- [ ] Multijoueur
+- [ ] Déplacement gauche/droite
+- [ ] Vidéo "t'es mauvais Jack" si le joueur perd au début -> gif ?
