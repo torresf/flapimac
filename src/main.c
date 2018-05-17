@@ -1,4 +1,5 @@
 #include "world.h"
+#include "display.h"
 
 int main(int argc, char** argv){
 
@@ -16,8 +17,27 @@ int main(int argc, char** argv){
 	SDL_WM_SetCaption("Flapimac", NULL);
 	resizeViewport();
 
-	glClearColor(0.5, 0.5, 0.5, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
+	SDL_Surface* surface;
+    surface = IMG_Load("./textures/fond.jpg");
+    if (surface == NULL){
+        printf("Erreur lors du chargement de l'image\n");
+    }
+    GLuint fond;
+    glGenTextures(1, &fond);
+    glBindTexture(GL_TEXTURE_2D, fond);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        GL_RGBA,
+        surface->w,
+        surface->h,
+        0,
+        GL_RGBA,
+        GL_UNSIGNED_BYTE,
+        surface->pixels);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    SDL_FreeSurface(surface);
 
 	World world;
 	initWorld(&world);
@@ -29,6 +49,9 @@ int main(int argc, char** argv){
 	int loaded = world.player->shooting_rate;
 	int enemy_loaded = 0;
 
+	/* Load malus texture */
+	GLuint malus = createTexture("./textures/malus.png");
+
 	/* Boucle d'affichage */
 	while(loop) {
 
@@ -38,6 +61,27 @@ int main(int argc, char** argv){
 		/* Code de dessin */
 
 		glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
+
+		glPushMatrix();
+			glEnable(GL_TEXTURE_2D);
+			glEnable(GL_BLEND);
+			glBindTexture(GL_TEXTURE_2D, fond);
+			glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+			glBegin(GL_QUADS);
+			    glTexCoord2f(0 , 0);
+			    glVertex2f(0 , 0);
+			    glTexCoord2f(1 , 0);
+			    glVertex2f(60, 0);
+			    glTexCoord2f(1 , 1);
+			    glVertex2f(60, 20);
+			    glTexCoord2f(0 , 1);
+			    glVertex2f(0, 20);
+			glEnd();
+			
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_BLEND);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		glPopMatrix();
 
 		// drawLandmark(); // Dessin du repère
 
@@ -99,7 +143,7 @@ int main(int argc, char** argv){
 		/* Evenement de tir */
 		if (shooting == 1 && loaded >= world.player->shooting_rate) {
 			// Création d'un élement missile et ajout à la liste
-			addElementToList(allocElement(4, world.player->x+1, world.player->y, world.player->speed_x + 0.2, 0, 0, 0), &(world.player->missiles));	
+			addElementToList(allocElement(4, world.player->x+1, world.player->y, world.player->speed_x + 0.2, 0, 0, 0, malus), &(world.player->missiles));	
 			loaded = 0;
 		}
 		loaded++;
@@ -107,7 +151,7 @@ int main(int argc, char** argv){
 		if (world.enemyList) {
 			if (enemy_loaded >= world.enemyList->shooting_rate) {
 					// Création d'un élement missile et ajout à la liste
-					addElementToList(allocElement(4, world.enemyList->x-1, world.enemyList->y, -0.2, 0, 0, 0), &(world.enemyList->missiles));
+					addElementToList(allocElement(4, world.enemyList->x-1, world.enemyList->y, -0.2, 0, 0, 0, malus), &(world.enemyList->missiles));
 				enemy_loaded = 0;
 			}
 			enemy_loaded++;

@@ -18,19 +18,6 @@ void initWorld(World *world) {
 	world->finishLineList = NULL;
 }
 
-/* Affiche les éléments du monde : Le joueur, les obstacles, les ennemis, les bonus */
-void drawWorld(World world) {
-	drawElements(world.player);
-	drawElements(world.obstacleList);
-	drawElements(world.enemyList);
-	drawElements(world.bonusList);
-	drawElements(world.finishLineList);
-	if (world.player->missiles)
-		drawElements(world.player->missiles);
-	if (world.enemyList && world.enemyList->missiles)
-		drawElements(world.enemyList->missiles);
-}
-
 /* Libère la mémoire associée au monde */
 void deleteWorld(World *world) {
 	deleteElements(&((*world).player));
@@ -39,6 +26,10 @@ void deleteWorld(World *world) {
 	deleteElements(&((*world).bonusList));
 	deleteElements(&((*world).finishLineList));
 }
+
+/*GLuint * loadTextures(GLuint *tableauTextures){
+
+}*/
 
 /* Chargement du niveau */
 void loadLevel(World *world) {
@@ -50,6 +41,23 @@ void loadLevel(World *world) {
 		perror("Error opening file");
 		return;
 	}
+
+	/* Load textures */
+
+	/* Textures éléments */
+    GLuint ennemi = createTexture("./textures/ennemi.png");
+    GLuint player = createTexture("./textures/avion.png");
+    GLuint bonus = createTexture("./textures/bonus.png");
+
+    /* Textures obstacles */
+    GLuint finish = createTexture("./textures/finish.png");
+    GLuint b_o_1 = createTexture("./textures/obstacle_cassable_1.png");
+    /* GLuint b_o_2 = createTexture("../textures/obstacle_cassable_2.png");
+    GLuint n_o_1 = createTexture("./textures/obstacle_normal_1.png");
+    GLuint n_o_2 = createTexture("./textures/obstacle_normal_2.png");
+    GLuint n_o_3 = createTexture("./textures/obstacle_normal_3.png");
+    GLuint n_o_4 = createTexture("./textures/obstacle_normal_4.png");
+    GLuint n_o_5 = createTexture("./textures/obstacle_normal_5.png"); */
 
 	char line[MAX_SIZE];
 	int line_number = 0;
@@ -65,23 +73,23 @@ void loadLevel(World *world) {
 					if (r != 255 || g != 255 || b != 255) {
 						if (r == 0 && g == 0 && b == 255) {
 							/* Joueur */
-							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index, 0.05, 0, 5, 30), &((*world).player));
+							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index, 0.05, 0, 5, 30, player), &((*world).player));
 						}
 						if (r == 0 && g == 0 && b == 0) {
 							/* Obstacle */
-							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0), &((*world).obstacleList));
+							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0, b_o_1), &((*world).obstacleList));
 						}
 						if (r == 255 && g == 0 && b == 0) {
 							/* Ennemi */
-							addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0.02, -4, 30), &((*world).enemyList));
+							addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0.02, -4, 30, ennemi), &((*world).enemyList));
 						}
 						if (r == 0 && g == 255 && b == 0) {
 							/* Bonus */
-							addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0.1, 0, 0), &((*world).bonusList));
+							addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0.1, 0, 0, bonus), &((*world).bonusList));
 						}
 						if (r == 255 && g == 255 && b == 0) {
 							/* Ligne d'arrivée */
-							addElementToList(allocElement(5, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0), &((*world).finishLineList));
+							addElementToList(allocElement(5, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0, finish), &((*world).finishLineList));
 						}
 					}
 					c_index++;
