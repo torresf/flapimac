@@ -29,16 +29,17 @@ int main(int argc, char** argv){
     glTexImage2D(
         GL_TEXTURE_2D,
         0,
-        GL_RGBA,
+        GL_RGB,
         surface->w,
         surface->h,
         0,
-        GL_RGBA,
+        GL_RGB,
         GL_UNSIGNED_BYTE,
         surface->pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
     SDL_FreeSurface(surface);
 
+	printf("OK\n");
 	World world;
 	initWorld(&world);
 	loadLevel(&world);
@@ -69,13 +70,13 @@ int main(int argc, char** argv){
 			glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 			glBegin(GL_QUADS);
 			    glTexCoord2f(0 , 0);
-			    glVertex2f(0 , 0);
-			    glTexCoord2f(1 , 0);
-			    glVertex2f(60, 0);
-			    glTexCoord2f(1 , 1);
 			    glVertex2f(60, 20);
-			    glTexCoord2f(0 , 1);
+			    glTexCoord2f(1 , 0);
 			    glVertex2f(0, 20);
+			    glTexCoord2f(1 , 1);
+			    glVertex2f(0, 0);
+			    glTexCoord2f(0 , 1);
+			    glVertex2f(60, 0);
 			glEnd();
 			
 			glDisable(GL_TEXTURE_2D);
@@ -122,17 +123,17 @@ int main(int argc, char** argv){
 		
 		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
 		if (checkIntersections(world.player, &(world.finishLineList))) { 
-			printf("Niveau terminé !\n");
+			printf("Niveau terminé\n");
 			break;
 		}
 		// Supprime les bonus lorsqu'ils sont récupérés par le joueur)
 		if (checkIntersections(world.player, &(world.bonusList))) {
-			printf("Bonus Récupéré !\n");
+			printf("Bonus Récupéré\n");
 			world.player->nb_bonus++;
 		}
 		// Supprime un ennemi lorsqu'on lui tire dessus
 		if (checkIntersections(world.player->missiles, &(world.enemyList))) { 
-			printf("Ennemi tué !\n");
+			printf("Ennemi tué\n");
 		}
 		// Détruit un missile lorsqu'il touche un obstacle
 		checkIntersections(world.obstacleList, &(world.player->missiles));
