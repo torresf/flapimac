@@ -16,6 +16,7 @@ void initWorld(World *world) {
 	world->enemyList = NULL;
 	world->bonusList = NULL;
 	world->finishLineList = NULL;
+	world->brokableObstacleList = NULL;
 }
 
 /* Libère la mémoire associée au monde */
@@ -25,11 +26,8 @@ void deleteWorld(World *world) {
 	deleteElements(&((*world).enemyList));
 	deleteElements(&((*world).bonusList));
 	deleteElements(&((*world).finishLineList));
+	deleteElements(&((*world).brokableObstacleList));
 }
-
-/*GLuint * loadTextures(GLuint *tableauTextures){
-
-}*/
 
 /* Chargement du niveau */
 void loadLevel(World *world) {
@@ -45,19 +43,20 @@ void loadLevel(World *world) {
 	/* Load textures */
 
 	/* Textures éléments */
-    GLuint ennemi = createTexture("./textures/ennemi.png");
-    GLuint player = createTexture("./textures/avion.png");
-    GLuint bonus = createTexture("./textures/bonus.png");
+    GLuint ennemi = createRGBATexture("./textures/ennemi.png");
+    GLuint player = createRGBATexture("./textures/avion.png");
+    GLuint bonus = createRGBATexture("./textures/bonus.png");
 
     /* Textures obstacles */
-    GLuint finish = createTexture("./textures/finish.png");
-    GLuint b_o_1 = createTexture("./textures/obstacle_cassable_1.png");
-    /* GLuint b_o_2 = createTexture("../textures/obstacle_cassable_2.png");
-    GLuint n_o_1 = createTexture("./textures/obstacle_normal_1.png");
-    GLuint n_o_2 = createTexture("./textures/obstacle_normal_2.png");
-    GLuint n_o_3 = createTexture("./textures/obstacle_normal_3.png");
-    GLuint n_o_4 = createTexture("./textures/obstacle_normal_4.png");
-    GLuint n_o_5 = createTexture("./textures/obstacle_normal_5.png"); */
+    GLuint finish = createRGBATexture("./textures/finish.png");
+    GLuint b_o_1 = createRGBATexture("./textures/obstacle_cassable_1.png");
+    GLuint n_o_1 = createRGBATexture("./textures/obstacle_normal_1.png");
+    /* GLuint b_o_2 = createRGBATexture("../textures/obstacle_cassable_2.png");
+    GLuint n_o_1 = createRGBATexture("./textures/obstacle_normal_1.png");
+    GLuint n_o_2 = createRGBATexture("./textures/obstacle_normal_2.png");
+    GLuint n_o_3 = createRGBATexture("./textures/obstacle_normal_3.png");
+    GLuint n_o_4 = createRGBATexture("./textures/obstacle_normal_4.png");
+    GLuint n_o_5 = createRGBATexture("./textures/obstacle_normal_5.png"); */
 
 	char line[MAX_SIZE];
 	int line_number = 0;
@@ -77,7 +76,7 @@ void loadLevel(World *world) {
 						}
 						if (r == 0 && g == 0 && b == 0) {
 							/* Obstacle */
-							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0, b_o_1), &((*world).obstacleList));
+							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0, n_o_1), &((*world).obstacleList));
 						}
 						if (r == 255 && g == 0 && b == 0) {
 							/* Ennemi */
@@ -90,6 +89,10 @@ void loadLevel(World *world) {
 						if (r == 255 && g == 255 && b == 0) {
 							/* Ligne d'arrivée */
 							addElementToList(allocElement(5, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0, finish), &((*world).finishLineList));
+						}
+						if (r == 0 && g == 255 && b == 255) {
+							/* Obstacle cassable */
+							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0, b_o_1), &((*world).brokableObstacleList));
 						}
 					}
 					c_index++;

@@ -17,33 +17,13 @@ int main(int argc, char** argv){
 	SDL_WM_SetCaption("Flapimac", NULL);
 	resizeViewport();
 
-	SDL_Surface* surface;
-    surface = IMG_Load("./textures/fond.jpg");
-    if (surface == NULL){
-        printf("Erreur lors du chargement de l'image\n");
-    }
-    GLuint fond;
-    glGenTextures(1, &fond);
-    glBindTexture(GL_TEXTURE_2D, fond);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(
-        GL_TEXTURE_2D,
-        0,
-        GL_RGB,
-        surface->w,
-        surface->h,
-        0,
-        GL_RGB,
-        GL_UNSIGNED_BYTE,
-        surface->pixels);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    SDL_FreeSurface(surface);
+	GLuint background = createRGBTexture("./textures/fond.jpg");
 
-	printf("OK\n");
 	World world;
 	initWorld(&world);
 	loadLevel(&world);
 	
+	float translation = 0.;
 	int player_status = 0;
 	int loop = 1;
 	int shooting = 0;
@@ -51,7 +31,7 @@ int main(int argc, char** argv){
 	int enemy_loaded = 0;
 
 	/* Load malus texture */
-	GLuint malus = createTexture("./textures/malus.png");
+	GLuint malus = createRGBATexture("./textures/malus.png");
 
 	/* Boucle d'affichage */
 	while(loop) {
@@ -63,28 +43,12 @@ int main(int argc, char** argv){
 
 		glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
 
+		/* Affichage et parallax de la texture de fond */
 		glPushMatrix();
-			glEnable(GL_TEXTURE_2D);
-			glEnable(GL_BLEND);
-			glBindTexture(GL_TEXTURE_2D, fond);
-			glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-			glBegin(GL_QUADS);
-			    glTexCoord2f(0 , 0);
-			    glVertex2f(60, 20);
-			    glTexCoord2f(1 , 0);
-			    glVertex2f(0, 20);
-			    glTexCoord2f(1 , 1);
-			    glVertex2f(0, 0);
-			    glTexCoord2f(0 , 1);
-			    glVertex2f(60, 0);
-			glEnd();
-			
-			glDisable(GL_TEXTURE_2D);
-			glDisable(GL_BLEND);
-			glBindTexture(GL_TEXTURE_2D, 0);
+			glTranslatef(translation,0,0);
+			displayBackground(background, NB_UNITS_X, NB_UNITS_Y); // Affiche le fond du niveau
 		glPopMatrix();
-
-		// drawLandmark(); // Dessin du repère
+		translation -= 0.01;
 
 		/* Déplacement du joueur */
 		if (player_status == 1)

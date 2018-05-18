@@ -6,7 +6,7 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 - [x] Créer structure Monde
 - [x] function initWorld()
 - [x] Implémenter les missiles
-- [ ] Ajouter des textures
+- [x] Ajouter des textures
 - [ ] Créer des obstacles complexes
 - [ ] Créer plusieurs niveaux
 - [ ] Menu

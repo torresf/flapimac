@@ -79,8 +79,36 @@ void drawElements(ElementList list) {
     }
 }
 
-/* Créer et initialise la texture avec l'image dont l'URL est passé en paramètre */
-GLuint createTexture(const char* theFileName){
+/* Créer et initialise la texture RGB avec l'image dont l'URL est passé en paramètre */
+GLuint createRGBTexture(const char* theFileName){
+    SDL_Surface* surface;
+    surface = IMG_Load(theFileName);
+    if (surface == NULL){
+        printf("Erreur lors du chargement de l'image\n");
+    }
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        GL_RGB,
+        surface->w,
+        surface->h,
+        0,
+        GL_RGB,
+        GL_UNSIGNED_BYTE,
+        surface->pixels);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    SDL_FreeSurface(surface);
+    return textureID;
+}
+
+/* Créer et initialise la texture RGBA avec l'image dont l'URL est passé en paramètre */
+GLuint createRGBATexture(const char* theFileName){
     SDL_Surface* surface;
     surface = IMG_Load(theFileName);
     if (surface == NULL){
@@ -132,6 +160,29 @@ void clearTexture(GLuint* idTexture){
     glDeleteTextures(1,idTexture);
 }
 
+/* Affiche le fond dont l'id est passé en paramètre ainsi que sa largeur et hauteur en unités */
+void displayBackground(GLuint background, int background_width, int background_height){
+    int nb_repeat_x = 5;
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, background);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0 , 0);
+        glVertex2f(2*nb_repeat_x*background_width, background_height);
+        glTexCoord2f(nb_repeat_x , 0);
+        glVertex2f(0, background_height);
+        glTexCoord2f(nb_repeat_x , 1);
+        glVertex2f(0, 0);
+        glTexCoord2f(0 , 1);
+        glVertex2f(2*nb_repeat_x*background_width, 0);
+    glEnd();
+    
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 /* Affiche les éléments du monde : Le joueur, les obstacles, les ennemis, les bonus */
 void drawWorld(World world) {
     drawElements(world.player);
@@ -139,6 +190,7 @@ void drawWorld(World world) {
     drawElements(world.enemyList);
     drawElements(world.bonusList);
     drawElements(world.finishLineList);
+    drawElements(world.brokableObstacleList);
     if (world.player->missiles)
         drawElements(world.player->missiles);
     if (world.enemyList && world.enemyList->missiles)

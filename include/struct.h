@@ -10,7 +10,7 @@ typedef struct point {
 } Point;
 
 typedef struct element {
-	int type; // Type de l'élément (0: Player, 1: Obstacle, 2: Enemy, 3: Bonus, 4: Missile)
+	int type; // Type de l'élément (0: Player, 1: Obstacle, 2: Enemy, 3: Bonus, 4: Missile, 5: Ligne d'arrivée, 6: Obstacle cassable)
 	float x, y; // Coordonnées de l'élément
 	float speed_x, speed_y; // Vitesse de l'élément
 	int nb_bonus; // nombre de bonus récupérés
@@ -22,7 +22,7 @@ typedef struct element {
 } Element, *ElementList;
 
 typedef struct world {
-	ElementList player, obstacleList, enemyList, bonusList, finishLineList; /* Listes des joueurs, obstacles, ennemis, bonus, et la ligne d'arrivée */
+	ElementList player, obstacleList, enemyList, bonusList, finishLineList, brokableObstacleList; /* Listes des joueurs, obstacles, ennemis, bonus, ligne d'arrivée, obstacles cassables */
 } World;
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x,y,r,g,b passées en paramètre et renvoie le pointeur vers cet espace mémoire */
