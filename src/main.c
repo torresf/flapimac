@@ -74,7 +74,7 @@ int main(int argc, char** argv){
 
 		/* Gestion des collisions */
 		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
-		if (checkIntersections(world.player, &(world.obstacleList)) || checkIntersections(world.player, &(world.enemyList))) { 
+		if (checkIntersections(world.player, &(world.obstacleList)) || checkIntersections(world.player, &(world.enemyList)) || checkIntersections(world.player, &(world.brokableObstacleList))) { 
 			printf("Partie perdu. Sortie du programme.\n");
 			break;
 		}
@@ -98,6 +98,10 @@ int main(int argc, char** argv){
 		// Supprime un ennemi lorsqu'on lui tire dessus
 		if (checkIntersections(world.player->missiles, &(world.enemyList))) { 
 			printf("Ennemi tué\n");
+		}
+		// Supprime un obstacle cassable lorsqu'on lui tire dessus
+		if (checkIntersections(world.player->missiles, &(world.brokableObstacleList)) && checkIntersections(world.brokableObstacleList, &(world.player->missiles))) { 
+			printf("Osbstacle detruit\n");
 		}
 		// Détruit un missile lorsqu'il touche un obstacle
 		checkIntersections(world.obstacleList, &(world.player->missiles));
