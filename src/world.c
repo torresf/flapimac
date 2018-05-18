@@ -129,3 +129,13 @@ void loadLevel(World *world) {
 	}
 	fclose (level1);
 }
+
+int random_0_1(void){
+    srand(time(NULL));
+    return (rand()&1);
+}
+
+int random_0_4(void){
+    srand(time(NULL));
+    return (rand()%5);
+}

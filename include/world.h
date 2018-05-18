@@ -4,6 +4,7 @@
 #include "struct.h"
 #include "player.h"
 #include "display.h"
+#include <time.h>
 
 #define MAX_SIZE 2000
 
@@ -28,5 +29,11 @@ void deleteWorld(World *world);
 
 /* Chargement du niveau */
 void loadLevel(World *world);
+
+/* Return random number between 0 and 1 */
+int random_0_1(void);
+
+/* Return random number between 0 and 4 */
+int random_0_4(void);
 
 #endif
