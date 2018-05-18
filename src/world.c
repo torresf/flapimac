@@ -34,7 +34,7 @@ void loadLevel(World *world) {
 	FILE *level1;
 
 	/* opening file for reading */
-	level1 = fopen("levels/level1.ppm", "r");
+	level1 = fopen("levels/level2.ppm", "r");
 	if (level1 == NULL) {
 		perror("Error opening file");
 		return;
@@ -58,49 +58,82 @@ void loadLevel(World *world) {
     GLuint n_o_4 = createRGBATexture("./textures/obstacle_normal_4.png");
     GLuint n_o_5 = createRGBATexture("./textures/obstacle_normal_5.png"); */
 
-	char line[MAX_SIZE];
-	int line_number = 0;
+	char line[64];
 	int r, g, b;
-	int l_index = 0, c_index = 0;
-	int offset;
-	while (fgets(line, sizeof line, level1) != NULL) {
-		if (line[0] != '#') {
-			if (line_number >= 4) {
-				char *data = line;
-				while (sscanf(data, " %d %d %d%n", &r, &g, &b, &offset) == 3) {
-					data += offset;
-					if (r != 255 || g != 255 || b != 255) {
-						if (r == 0 && g == 0 && b == 255) {
-							/* Joueur */
-							addElementToList(allocElement(0, c_index, (NB_UNITS_Y - 1) - l_index, 0.05, 0, 5, 30, player), &((*world).player));
-						}
-						if (r == 0 && g == 0 && b == 0) {
-							/* Obstacle */
-							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0, n_o_1), &((*world).obstacleList));
-						}
-						if (r == 255 && g == 0 && b == 0) {
-							/* Ennemi */
-							addElementToList(allocElement(2, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0.02, -4, 30, ennemi), &((*world).enemyList));
-						}
-						if (r == 0 && g == 255 && b == 0) {
-							/* Bonus */
-							addElementToList(allocElement(3, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0.1, 0, 0, bonus), &((*world).bonusList));
-						}
-						if (r == 255 && g == 255 && b == 0) {
-							/* Ligne d'arrivée */
-							addElementToList(allocElement(5, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0, finish), &((*world).finishLineList));
-						}
-						if (r == 0 && g == 255 && b == 255) {
-							/* Obstacle cassable */
-							addElementToList(allocElement(1, c_index, (NB_UNITS_Y - 1) - l_index, 0, 0, 0, 0, b_o_1), &((*world).brokableObstacleList));
-						}
-					}
-					c_index++;
+	int width, j, height, i, color_max;
+
+	/* 
+	 * Première ligne du fichier 
+	 * <type>
+	*/
+	fgets(line, sizeof line, level1);
+	if (strcmp(line, "P3\n") != 0) {
+		printf("Erreur : Format du fichier non pris en charge.\n");
+		exit(0);
+	}
+
+	/* 
+	 * Deuxième ligne du fichier 
+	 * <width> <height>
+	*/
+	fgets(line, sizeof line, level1);
+	printf("line 2 : %s", line);
+	if (line[0] == '#')
+	{
+		printf("Coucou\n");
+		fgets(line, sizeof line, level1);
+		printf("line 2 : %s", line);
+	}
+	sscanf(line, "%d %d", &width, &height);
+
+	/* 
+	 * Troisième ligne du fichier 
+	 * <color_max>
+	*/
+	fgets(line, sizeof line, level1);
+	printf("line 3 : %s", line);
+	sscanf(line, "%d", &color_max);
+
+	for (i = 0; i < height; ++i) {	
+		for (j = 0; j < width; ++j)	{
+			fgets(line, 64, level1);
+			sscanf(line, "%d", &r);
+			fgets(line, 64, level1);
+			sscanf(line, "%d", &g);
+			fgets(line, 64, level1);
+			sscanf(line, "%d", &b);
+			printf("%d, %d, %d\n", r, g, b);
+			// exit(0);
+			if (r != 255 || g != 255 || b != 255) {
+				if (r == 0 && g == 0 && b == 255) {
+					/* Joueur */
+					printf("JOUEUR\n");
+					addElementToList(allocElement(0, j, (NB_UNITS_Y - 1) - i, 0.05, 0, 5, 30, player), &((*world).player));
 				}
-				c_index = 0;
-				l_index++;
+				if (r == 0 && g == 0 && b == 0) {
+					/* Obstacle */
+					printf("Obstacle\n");
+					addElementToList(allocElement(1, j, (NB_UNITS_Y - 1) - i, 0, 0, 0, 0, n_o_1), &((*world).obstacleList));
+				}
+				if (r == 255 && g == 0 && b == 0) {
+					/* Ennemi */
+					printf("Ennemi\n");
+					addElementToList(allocElement(2, j, (NB_UNITS_Y - 1) - i, 0, 0.02, -4, 30, ennemi), &((*world).enemyList));
+				}
+				if (r == 0 && g == 255 && b == 0) {
+					/* Bonus */
+					printf("Bonus\n");
+					addElementToList(allocElement(3, j, (NB_UNITS_Y - 1) - i, 0, 0.1, 0, 0, bonus), &((*world).bonusList));
+				}
+				if (r == 255 && g == 255 && b == 0) {
+					/* Ligne d'arrivée */
+					addElementToList(allocElement(5, j, (NB_UNITS_Y - 1) - i, 0, 0, 0, 0, finish), &((*world).finishLineList));
+				}
+				if (r == 0 && g == 255 && b == 255) {
+					/* Obstacle cassable */
+					addElementToList(allocElement(1, j, (NB_UNITS_Y - 1) - i, 0, 0, 0, 0, b_o_1), &((*world).brokableObstacleList));
+				}
 			}
-			line_number++;
 		}
 	}
 	fclose (level1);

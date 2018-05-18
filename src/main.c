@@ -85,7 +85,7 @@ int main(int argc, char** argv){
 			}
 		}
 		
-		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
+		// Fin du niveau lorsque le joueur passe la ligne d'arrivée
 		if (checkIntersections(world.player, &(world.finishLineList))) { 
 			printf("Niveau terminé\n");
 			break;
