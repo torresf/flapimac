@@ -98,8 +98,7 @@ void loadLevel(World *world) {
 			sscanf(line, "%d", &g);
 			fgets(line, 64, level1);
 			sscanf(line, "%d", &b);
-			printf("%d, %d, %d\n", r, g, b);
-			// exit(0);
+			
 			if (r != 255 || g != 255 || b != 255) {
 				if (r == 0 && g == 0 && b == 255) {
 					/* Joueur */

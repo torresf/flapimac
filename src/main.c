@@ -45,10 +45,10 @@ int main(int argc, char** argv){
 
 		/* Affichage et parallax de la texture de fond */
 		glPushMatrix();
-			glTranslatef(translation,0,0);
+			glTranslatef(translation, 0, 0);
 			displayBackground(background, NB_UNITS_X, NB_UNITS_Y); // Affiche le fond du niveau
 		glPopMatrix();
-		translation -= 0.01;
+		translation -= 0.02;
 
 		/* Déplacement du joueur */
 		if (player_status == 1)
@@ -101,7 +101,7 @@ int main(int argc, char** argv){
 		}
 		// Supprime un obstacle cassable lorsqu'on lui tire dessus
 		if (checkIntersections(world.player->missiles, &(world.brokableObstacleList)) && checkIntersections(world.brokableObstacleList, &(world.player->missiles))) { 
-			printf("Osbstacle detruit\n");
+			printf("Obstacle détruit\n");
 		}
 		// Détruit un missile lorsqu'il touche un obstacle
 		checkIntersections(world.obstacleList, &(world.player->missiles));
