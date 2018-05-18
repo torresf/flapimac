@@ -96,7 +96,7 @@ int main(int argc, char** argv){
 			world.player->nb_bonus++;
 		}
 		// Supprime un ennemi lorsqu'on lui tire dessus
-		if (checkIntersections(world.player->missiles, &(world.enemyList))) { 
+		if (checkIntersections(world.player->missiles, &(world.enemyList)) && checkIntersections(world.enemyList, &(world.player->missiles))) { 
 			printf("Ennemi tué\n");
 		}
 		// Supprime un obstacle cassable lorsqu'on lui tire dessus

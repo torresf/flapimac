@@ -34,10 +34,10 @@ void loadLevel(World *world) {
 	FILE *level1;
 
 	/* opening file for reading */
-	level1 = fopen("levels/level2.ppm", "r");
+	level1 = fopen("levels/level1.ppm", "r");
 	if (level1 == NULL) {
 		perror("Error opening file");
-		return;
+		exit(0);
 	}
 
 	/* Load textures */
@@ -77,12 +77,9 @@ void loadLevel(World *world) {
 	 * <width> <height>
 	*/
 	fgets(line, sizeof line, level1);
-	printf("line 2 : %s", line);
 	if (line[0] == '#')
 	{
-		printf("Coucou\n");
 		fgets(line, sizeof line, level1);
-		printf("line 2 : %s", line);
 	}
 	sscanf(line, "%d %d", &width, &height);
 
@@ -91,7 +88,6 @@ void loadLevel(World *world) {
 	 * <color_max>
 	*/
 	fgets(line, sizeof line, level1);
-	printf("line 3 : %s", line);
 	sscanf(line, "%d", &color_max);
 
 	for (i = 0; i < height; ++i) {	
@@ -107,22 +103,18 @@ void loadLevel(World *world) {
 			if (r != 255 || g != 255 || b != 255) {
 				if (r == 0 && g == 0 && b == 255) {
 					/* Joueur */
-					printf("JOUEUR\n");
-					addElementToList(allocElement(0, j, (NB_UNITS_Y - 1) - i, 0.05, 0, 5, 30, player), &((*world).player));
+					addElementToList(allocElement(0, j, (NB_UNITS_Y - 1) - i, 0.10, 0, 5, 30, player), &((*world).player));
 				}
 				if (r == 0 && g == 0 && b == 0) {
 					/* Obstacle */
-					printf("Obstacle\n");
 					addElementToList(allocElement(1, j, (NB_UNITS_Y - 1) - i, 0, 0, 0, 0, n_o_1), &((*world).obstacleList));
 				}
 				if (r == 255 && g == 0 && b == 0) {
 					/* Ennemi */
-					printf("Ennemi\n");
-					addElementToList(allocElement(2, j, (NB_UNITS_Y - 1) - i, 0, 0.02, -4, 30, ennemi), &((*world).enemyList));
+					addElementToList(allocElement(2, j, (NB_UNITS_Y - 1) - i, 0, 0.04, -4, 30, ennemi), &((*world).enemyList));
 				}
 				if (r == 0 && g == 255 && b == 0) {
 					/* Bonus */
-					printf("Bonus\n");
 					addElementToList(allocElement(3, j, (NB_UNITS_Y - 1) - i, 0, 0.1, 0, 0, bonus), &((*world).bonusList));
 				}
 				if (r == 255 && g == 255 && b == 0) {
