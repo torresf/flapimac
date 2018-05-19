@@ -28,7 +28,7 @@ int main(int argc, char** argv){
 	int loop = 1;
 	int shooting = 0;
 	int loaded = world.player->shooting_rate;
-	int enemy_loaded = 0;
+	// int enemy_loaded = 0;
 
 	/* Load malus texture */
 	GLuint malus = createRGBATexture("./textures/malus.png");
@@ -74,37 +74,42 @@ int main(int argc, char** argv){
 
 		/* Gestion des collisions */
 		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
-		if (checkIntersections(&(world.player), &(world.obstacleList),0) || checkIntersections(&(world.player), &(world.enemyList),0) || checkIntersections(&(world.player), &(world.brokableObstacleList),0)) { 
+		if (checkIntersections(&(world.player), &(world.obstacleList), 0) || checkIntersections(&(world.player), &(world.enemyList),0) || checkIntersections(&(world.player), &(world.brokableObstacleList),0)) { 
 			printf("Partie perdue. Sortie du programme.\n");
 			break;
 		}
+
 		if (world.enemyList) {
-			if (checkIntersections(&(world.player), &(world.enemyList->missiles),0)) { 
-				printf("Touché par ennemi.\n");
+			if (checkMissilesIntersections(&world)) {
+				printf("Touché par missile ennemi.\n");
 				break;
 			}
 		}
 		
 		// Fin du niveau lorsque le joueur passe la ligne d'arrivée
-		if (checkIntersections(&(world.player), &(world.finishLineList),0)) { 
+		if (checkIntersections(&(world.player), &(world.finishLineList), 0)) { 
 			printf("Niveau terminé\n");
 			break;
 		}
+
 		// Supprime les bonus lorsqu'ils sont récupérés par le joueur)
-		if (checkIntersections(&(world.player), &(world.bonusList),0)) {
+		if (checkIntersections(&(world.player), &(world.bonusList), 0)) {
 			printf("Bonus Récupéré\n");
 			world.player->nb_bonus++;
 		}
+
 		// Supprime un ennemi lorsqu'on lui tire dessus
-		if (checkIntersections(&(world.player->missiles), &(world.enemyList),1)) { 
+		if (checkIntersections(&(world.player->missiles), &(world.enemyList), 1)) { 
 			printf("Ennemi tué\n");
 		}
+
 		// Supprime un obstacle cassable lorsqu'on lui tire dessus
-		if (checkIntersections(&(world.player->missiles), &(world.brokableObstacleList),1)) { 
+		if (checkIntersections(&(world.player->missiles), &(world.brokableObstacleList), 1)) { 
 			printf("Obstacle détruit\n");
 		}
+
 		// Détruit un missile lorsqu'il touche un obstacle
-		checkIntersections(&(world.obstacleList), &(world.player->missiles),0);
+		checkIntersections(&(world.obstacleList), &(world.player->missiles), 0);
 		
 		// Calcul les caractéristiques du joueur en fonction du nombre de bonus
 		checkBonus(&world.player);
@@ -117,14 +122,8 @@ int main(int argc, char** argv){
 		}
 		loaded++;
 		
-		if (world.enemyList) {
-			if (enemy_loaded >= world.enemyList->shooting_rate) {
-					// Création d'un élement missile et ajout à la liste
-					addElementToList(allocElement(4, world.enemyList->x-1, world.enemyList->y, -0.2, 0, 0, 0, malus), &(world.enemyList->missiles));
-				enemy_loaded = 0;
-			}
-			enemy_loaded++;
-		}
+		/* Evenement de tir ennemi */
+		enemyShooting(&world.enemyList, malus);
 
 		/* Affichage du plateau */
 		glPushMatrix();

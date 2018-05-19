@@ -54,31 +54,34 @@ void checkBonus(ElementList* player) {
 
 /* Fonctions relatives aux missiles */
 void moveMissiles(ElementList* shooter) {
-	ElementList tmp = (*shooter)->missiles;
-	while (tmp != NULL) {
-		// Destruction du missile lorsqu'il dépasse la portée du joueur
-		if ((*shooter)->type  == 2)
-		{
-			if (tmp->x < (*shooter)->x + (*shooter)->shooting_range) {
-				ElementList tmp2 = tmp;
-				removeElementFromList(tmp2, &((*shooter)->missiles));
+	ElementList tmp_shooter = *shooter;
+	while (tmp_shooter) {
+		ElementList tmp = tmp_shooter->missiles;
+		while (tmp != NULL) {
+			// Destruction du missile lorsqu'il dépasse la portée du joueur
+			if (tmp_shooter->type  == 2)
+			{
+				if (tmp->x < tmp_shooter->x + tmp_shooter->shooting_range) {
+					ElementList tmp2 = tmp;
+					removeElementFromList(tmp2, &(tmp_shooter->missiles));
+				} else {
+					tmp->x += tmp->speed_x;
+				}
 			} else {
-				tmp->x += tmp->speed_x;
+				if (tmp->x > tmp_shooter->x + tmp_shooter->shooting_range) {
+					ElementList tmp2 = tmp;
+					removeElementFromList(tmp2, &(tmp_shooter->missiles));
+				} else {
+					tmp->x += tmp->speed_x;
+				}
 			}
-		} else {
-			if (tmp->x > (*shooter)->x + (*shooter)->shooting_range) {
-				ElementList tmp2 = tmp;
-				removeElementFromList(tmp2, &((*shooter)->missiles));
-			} else {
-				tmp->x += tmp->speed_x;
-			}
+			tmp = tmp->next;
 		}
-		
-		tmp = tmp->next;
+		tmp_shooter = tmp_shooter->next;
 	}
 }
 
-/* Fonctions relatives aux bonus */
+/* Fonctions relatives mouvements verticaux des éléments (bonus / ennemis) */
 void moveVertical(ElementList* list) {
 	ElementList tmp = *list;
 	while (tmp) {
@@ -86,6 +89,20 @@ void moveVertical(ElementList* list) {
 			tmp->speed_y = -tmp->speed_y;
 		}
 		tmp->y += tmp->speed_y;
+		tmp = tmp->next;
+	}
+}
+
+/* Fonctions de tir des ennemis */
+void enemyShooting(ElementList* enemyList, GLuint malus) {
+	Element* tmp = *enemyList;
+	while (tmp) {
+		if (tmp->loaded >= tmp->shooting_rate) {
+			// Création d'un élement missile et ajout à la liste
+			addElementToList(allocElement(4, tmp->x - 1, tmp->y, -0.2, 0, 0, 0, malus), &(tmp->missiles));
+			tmp->loaded = 0;
+		}
+		tmp->loaded += 1;
 		tmp = tmp->next;
 	}
 }

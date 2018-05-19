@@ -13,9 +13,10 @@ typedef struct element {
 	int type; // Type de l'élément (0: Player, 1: Obstacle, 2: Enemy, 3: Bonus, 4: Missile, 5: Ligne d'arrivée, 6: Obstacle cassable)
 	float x, y; // Coordonnées de l'élément
 	float speed_x, speed_y; // Vitesse de l'élément
-	int nb_bonus; // nombre de bonus récupérés
-	int shooting_range; // portée de tir
-	int shooting_rate; // portée de tir
+	int nb_bonus; // Nombre de bonus récupérés
+	int shooting_range; // Portée de tir
+	int shooting_rate; // Cadence de tir
+	int loaded; // Rechargement
 	struct element* next; // Elément suivant
 	struct element* missiles; // Liste chainée de missiles
 	GLuint texture; // Texture de l'élément
@@ -36,6 +37,9 @@ void removeElementFromList(Element* element, ElementList* list);
 
 /* Vérifie si il n'y a pas de collisions entre les éléments de deux listes différentes, si oui : si action == 0, on supprime l'élément de la 2ème liste | si action == 1, on supprime les éléments des deux listes */
 int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove);
+
+/* Vérifie si il n'y a pas de collisions entre les missiles ennemis et le joueur */
+int checkMissilesIntersections(World* world);
 
 /* Renvoie 1 si les deux éléments entrent en collision, 0 sinon */
 int collided(Element a, Element b);

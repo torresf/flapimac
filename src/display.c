@@ -193,6 +193,10 @@ void drawWorld(World world) {
     drawElements(world.brokableObstacleList);
     if (world.player->missiles)
         drawElements(world.player->missiles);
-    if (world.enemyList && world.enemyList->missiles)
-        drawElements(world.enemyList->missiles);
+    Element* tmp = world.enemyList;
+    while (tmp) {
+        if (tmp && tmp->missiles)
+            drawElements(tmp->missiles);
+        tmp = tmp->next;
+    }
 }

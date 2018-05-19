@@ -20,6 +20,7 @@ Element* allocElement(int type, float x, float y, float speed_x, float speed_y, 
 	element->nb_bonus = 0;
 	element->shooting_range = shooting_range;
 	element->shooting_rate = shooting_rate;
+	element->loaded = 0;
 	element->next = NULL;
 	element->missiles = NULL;
 	element->texture = texture;
@@ -76,6 +77,18 @@ int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove)
 		}
 		tmp1 = *list1;
 		tmp2 = tmp2->next;
+	}
+	return 0;
+}
+
+/* Vérifie si il n'y a pas de collisions entre les éléments de deux listes différentes, si oui : si action == 0, on supprime l'élément de la 2ème liste | si action == 1, on supprime les éléments des deux listes */
+int checkMissilesIntersections(World* world) {
+	ElementList tmp = world->enemyList;
+	while (tmp) {
+		if (checkIntersections(&(world->player), &(tmp->missiles), 0)) { 
+			return 1;
+		}
+		tmp = tmp->next;
 	}
 	return 0;
 }
