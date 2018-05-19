@@ -74,6 +74,7 @@ int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove)
 			}
 			tmp1 = tmp1->next;
 		}
+		tmp1 = *list1;
 		tmp2 = tmp2->next;
 	}
 	return 0;
