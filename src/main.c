@@ -74,37 +74,37 @@ int main(int argc, char** argv){
 
 		/* Gestion des collisions */
 		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
-		if (checkIntersections(world.player, &(world.obstacleList)) || checkIntersections(world.player, &(world.enemyList)) || checkIntersections(world.player, &(world.brokableObstacleList))) { 
-			printf("Partie perdu. Sortie du programme.\n");
+		if (checkIntersections(&(world.player), &(world.obstacleList),0) || checkIntersections(&(world.player), &(world.enemyList),0) || checkIntersections(&(world.player), &(world.brokableObstacleList),0)) { 
+			printf("Partie perdue. Sortie du programme.\n");
 			break;
 		}
 		if (world.enemyList) {
-			if (checkIntersections(world.player, &(world.enemyList->missiles))) { 
+			if (checkIntersections(&(world.player), &(world.enemyList->missiles),0)) { 
 				printf("Touché par ennemi.\n");
 				break;
 			}
 		}
 		
 		// Fin du niveau lorsque le joueur passe la ligne d'arrivée
-		if (checkIntersections(world.player, &(world.finishLineList))) { 
+		if (checkIntersections(&(world.player), &(world.finishLineList),0)) { 
 			printf("Niveau terminé\n");
 			break;
 		}
 		// Supprime les bonus lorsqu'ils sont récupérés par le joueur)
-		if (checkIntersections(world.player, &(world.bonusList))) {
+		if (checkIntersections(&(world.player), &(world.bonusList),0)) {
 			printf("Bonus Récupéré\n");
 			world.player->nb_bonus++;
 		}
 		// Supprime un ennemi lorsqu'on lui tire dessus
-		if (checkIntersections(world.player->missiles, &(world.enemyList)) && checkIntersections(world.enemyList, &(world.player->missiles))) { 
+		if (checkIntersections(&(world.player->missiles), &(world.enemyList),1)) { 
 			printf("Ennemi tué\n");
 		}
 		// Supprime un obstacle cassable lorsqu'on lui tire dessus
-		if (checkIntersections(world.player->missiles, &(world.brokableObstacleList)) && checkIntersections(world.brokableObstacleList, &(world.player->missiles))) { 
+		if (checkIntersections(&(world.player->missiles), &(world.brokableObstacleList),1)) { 
 			printf("Obstacle détruit\n");
 		}
 		// Détruit un missile lorsqu'il touche un obstacle
-		checkIntersections(world.obstacleList, &(world.player->missiles));
+		checkIntersections(&(world.obstacleList), &(world.player->missiles),0);
 		
 		// Calcul les caractéristiques du joueur en fonction du nombre de bonus
 		checkBonus(&world.player);

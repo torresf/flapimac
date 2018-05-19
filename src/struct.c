@@ -59,19 +59,21 @@ void removeElementFromList(Element* element, ElementList* list) {
 	}
 }
 
-/* Vérifie si il n'y a pas de collisions entre les élémentsde deux listes différentes, si oui supprime l'élément de la 2ème liste */
-int checkIntersections(ElementList list1, ElementList* list2) {
-	ElementList tmp1 = list1;
-	ElementList tmp2 = *list2;
+/* Vérifie si il n'y a pas de collisions entre les éléments de deux listes différentes, si oui : si action == 0, on supprime l'élément de la 2ème liste | si action == 1, on supprime les éléments des deux listes */
+int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove) {
+	Element* tmp1 = *list1;
+	Element* tmp2 = *list2;
 	while (tmp2) {
-		while (list1) {
-			if (collided(*list1, *tmp2) == 1) {
+		while (tmp1) {
+			if (collided(*tmp1, *tmp2) == 1) {
 				removeElementFromList(tmp2, list2);
+				if (doubleRemove == 1){
+					removeElementFromList(tmp1, list1);
+				}
 				return 1;
 			}
-			list1 = list1->next;
+			tmp1 = tmp1->next;
 		}
-		list1 = tmp1;
 		tmp2 = tmp2->next;
 	}
 	return 0;

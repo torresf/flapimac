@@ -34,8 +34,8 @@ void addElementToList(Element* element, ElementList* list);
 /* Fonction qui supprime un élément d'une liste */
 void removeElementFromList(Element* element, ElementList* list);
 
-/* Vérifie si il n'y a pas de collisions entre les élémentsde deux listes différentes, si oui supprime l'élément de la 2ème liste */
-int checkIntersections(ElementList list1, ElementList* list2);
+/* Vérifie si il n'y a pas de collisions entre les éléments de deux listes différentes, si oui : si action == 0, on supprime l'élément de la 2ème liste | si action == 1, on supprime les éléments des deux listes */
+int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove);
 
 /* Renvoie 1 si les deux éléments entrent en collision, 0 sinon */
 int collided(Element a, Element b);
