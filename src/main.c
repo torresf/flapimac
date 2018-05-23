@@ -23,6 +23,7 @@ int main(int argc, char** argv){
 	{
 	  printf("%s", Mix_GetError());
 	}
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 2); //Mettre le volume à la moitié
 	Mix_Music *musique; //Création du pointeur de type Mix_Music
 	musique = Mix_LoadMUS("./music/musique_fond.mp3"); //Chargement de la musique
 	Mix_PlayMusic(musique, -1); //Joue infiniment la musique
@@ -298,28 +299,25 @@ int main(int argc, char** argv){
 						case SDLK_p: 
 		                    if(Mix_PausedMusic() == 1)//Si la musique est en pause
 		                    {
-		                    	printf("Play musique\n");
 		                        Mix_ResumeMusic(); //Reprendre la musique
 		                    }
 		                    else
 		                    {
-		                    	printf("Pause musique\n");
 		                        Mix_PauseMusic(); //Mettre en pause la musique
 		                    }
 		                    break;
 		                case SDLK_m:
-		                	printf("Stop musique\n");
 		                    Mix_HaltMusic(); //Arrête la musique
 		                    break;
 
 		                case SDLK_KP_PLUS:
 		                	printf("volume : +1\n");
-		                	Mix_VolumeMusic(MIX_MAX_VOLUME + 1);
+		                	MIX_MAX_VOLUME += 1;
 		                	break;
 
 		                case SDLK_KP_MINUS:
 		                	printf("volume : -1\n");
-		                	Mix_VolumeMusic(MIX_MAX_VOLUME - 1);
+		                	MIX_MAX_VOLUME -= 1;
 		                	break;
 
 						default:
