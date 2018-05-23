@@ -40,6 +40,7 @@ int main(int argc, char** argv){
 	GLuint arrow = createRGBATexture("./textures/main/fleche.png");
 	GLuint select_text = createRGBATexture("./textures/main/select.png");
 	GLuint esc_text = createRGBATexture("./textures/main/esc.png");
+	GLuint pause = createRGBATexture("./textures/main/pause.png");
 
 	/* Boucle d'affichage */
 	while(loop) {
@@ -75,15 +76,22 @@ int main(int argc, char** argv){
 			/* Menu */
 			if (level_loaded == 1) {
 				// Menu Pause
+				/* Affichage du plateau gelé en fond */
+				glPushMatrix();
+					glTranslatef(2 - world.player->x, 0, 0);
+					drawWorld(world);
+				glPopMatrix();
+
+				glPushMatrix();
+					glTranslatef(NB_UNITS_X / 2, NB_UNITS_Y / 2, 0);
+					displayTexture(pause, NB_UNITS_X, NB_UNITS_Y);
+				glPopMatrix();
+
 				glPushMatrix();
 					glTranslatef(1, NB_UNITS_Y-1, 0);
 					displayTexture(esc_text, 1.04, 0.55);
 				glPopMatrix();
-				/* Affichage du plateau */
-				glPushMatrix();
-					glTranslatef(2 - world.player->x, 0, 0); // Translation du monde pour suivre le joueur
-					drawWorld(world);
-				glPopMatrix();
+				
 			} else {
 				// Menu sélection du niveau
 				if (chosen_level != 1) {
@@ -237,17 +245,16 @@ int main(int argc, char** argv){
 
 						case SDLK_ESCAPE:
 							if (start == 1) {
-								printf("Pause\n");
+								/* Pause */
 								start = 0;
 							} else {
-								printf("Le jeu est déjà en pause.\n");
 								if (level_loaded == 1) {
-									printf("Une partie a été lancée, on retourne au menu et on réinitialise.\n");
+									/* Une partie a été lancée, on retourne au menu et on réinitialise. */
 									level_loaded = 0;
 									initWorld(&world);
 									translation = 0;
 								} else {
-									printf("Aucune partie n'a été lancée, on quitte.\n");
+									/* On quitte */
 									loop = 0;
 								}
 							}
