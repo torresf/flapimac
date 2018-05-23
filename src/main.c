@@ -17,10 +17,8 @@ int main(int argc, char** argv){
 	SDL_WM_SetCaption("Flapimac", NULL);
 	resizeViewport();
 
-
 	World world;
 	initWorld(&world);
-	// loadLevel(&world);
 
 	float translation = 0.;
 	int player_status = 0;
@@ -30,6 +28,8 @@ int main(int argc, char** argv){
 	int player_loaded = 0;
 	int chosen_level = 1;
 	int level_loaded = 0;
+	float right_arrow_scale = 1.;
+	float left_arrow_scale = 1.;
 
 	/* Load malus texture */
 	GLuint malus = createRGBATexture("./textures/main/malus.png");
@@ -37,6 +37,9 @@ int main(int argc, char** argv){
 	GLuint background2 = createRGBTexture("./textures/level_2/fond.jpg");
 	GLuint background3 = createRGBTexture("./textures/level_3/fond.jpg");
 	GLuint background4 = createRGBTexture("./textures/level_4/fond.jpg");
+	GLuint arrow = createRGBATexture("./textures/main/fleche.png");
+	GLuint select_text = createRGBATexture("./textures/main/select.png");
+	GLuint esc_text = createRGBATexture("./textures/main/esc.png");
 
 	/* Boucle d'affichage */
 	while(loop) {
@@ -47,9 +50,9 @@ int main(int argc, char** argv){
 		/* Code de dessin */
 		glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
 
-		if (start == 0) {
-			/* Menu */
-			// Affiche le fond du niveau
+		// Affichage de la texture de fond en fonction du niveau choisi
+		glPushMatrix();
+			glTranslatef(translation, 0, 0);
 			switch (chosen_level) {
 				case 1:
 					displayBackground(background1, NB_UNITS_X, NB_UNITS_Y);
@@ -66,6 +69,43 @@ int main(int argc, char** argv){
 				default:
 					break;
 			}
+		glPopMatrix();
+
+		if (start == 0) {
+			/* Menu */
+			if (level_loaded == 1) {
+				// Menu Pause
+				glPushMatrix();
+					glTranslatef(1, NB_UNITS_Y-1, 0);
+					displayTexture(esc_text, 1.04, 0.55);
+				glPopMatrix();
+			} else {
+				// Menu sélection du niveau
+				if (chosen_level != 1) {
+					glPushMatrix();
+						glTranslatef(13, 4, 0);
+						glRotatef(90, 0, 0, 1);
+						glScalef(left_arrow_scale, left_arrow_scale, 1);
+						displayTexture(arrow, 1.02, 1.32);
+					glPopMatrix();
+				}
+				if (chosen_level != 4) {
+					glPushMatrix();
+						glTranslatef(17, 4, 0);
+						glRotatef(-90, 0, 0, 1);
+						glScalef(right_arrow_scale, right_arrow_scale, 1);
+						displayTexture(arrow, 1.02, 1.32);
+					glPopMatrix();
+				}
+				glPushMatrix();
+					glTranslatef(15, 5, 0);
+					displayTexture(select_text, 5.86, 0.55);
+				glPopMatrix();
+				glPushMatrix();
+					glTranslatef(1, NB_UNITS_Y-1, 0);
+					displayTexture(esc_text, 1.04, 0.55);
+				glPopMatrix();
+			}
 		} else {
 			// Lancement du jeu
 			if (level_loaded == 0) {
@@ -73,26 +113,7 @@ int main(int argc, char** argv){
 			}
 			level_loaded = 1;
 
-			/* Affichage et parallax de la texture de fond */
-			glPushMatrix();
-				glTranslatef(translation, 0, 0);
-				switch (chosen_level) {
-					case 1:
-						displayBackground(background1, NB_UNITS_X, NB_UNITS_Y);
-						break;
-					case 2:
-						displayBackground(background2, NB_UNITS_X, NB_UNITS_Y);
-						break;
-					case 3:
-						displayBackground(background3, NB_UNITS_X, NB_UNITS_Y);
-						break;
-					case 4:
-						displayBackground(background4, NB_UNITS_X, NB_UNITS_Y);
-						break;
-					default:
-						break;
-				}
-			glPopMatrix();
+			/* Translation de la texture de fond */
 			translation -= 0.02;
 
 			/* Déplacement du joueur */
@@ -120,21 +141,33 @@ int main(int argc, char** argv){
 			/* Gestion des collisions */
 			// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
 			if (checkIntersections(&(world.player), &(world.obstacleList), 0) || checkIntersections(&(world.player), &(world.enemyList),0) || checkIntersections(&(world.player), &(world.brokableObstacleList),0)) { 
-				printf("Partie perdue. Sortie du programme.\n");
-				break;
+				printf("Partie perdue. Retour au menu.\n");
+				start = 0;
+				level_loaded = 0;
+				translation = 0;
+				initWorld(&world);
+				continue;
 			}
 
 			if (world.enemyList) {
 				if (checkMissilesIntersections(&world)) {
 					printf("Touché par missile ennemi.\n");
-					break;
+					start = 0;
+					level_loaded = 0;
+					translation = 0;
+					initWorld(&world);
+					continue;
 				}
 			}
 			
 			// Fin du niveau lorsque le joueur passe la ligne d'arrivée
 			if (checkIntersections(&(world.player), &(world.finishLineList), 0)) { 
-				printf("Niveau terminé\n");
-				break;
+				printf("Niveau terminé. Retour au menu.\n");
+				start = 0;
+				level_loaded = 0;
+				translation = 0;
+				initWorld(&world);
+				continue;
 			}
 
 			// Supprime les bonus lorsqu'ils sont récupérés par le joueur)
@@ -232,13 +265,11 @@ int main(int argc, char** argv){
 							break;
 
 						case SDLK_LEFT:
-							if (start == 0 && chosen_level > 1 && level_loaded == 0)
-								chosen_level--;
+							left_arrow_scale = .8;
 							break;
 
 						case SDLK_RIGHT:
-							if (start == 0 && chosen_level < 4 && level_loaded == 0)
-								chosen_level++;
+							right_arrow_scale = .8;
 							break;
 
 						case SDLK_SPACE:
@@ -269,6 +300,18 @@ int main(int argc, char** argv){
 							if (player_status == -1) {
 								player_status = 0;
 							}
+							break;
+
+						case SDLK_LEFT:
+							left_arrow_scale = 1;
+							if (start == 0 && chosen_level > 1 && level_loaded == 0)
+								chosen_level--;
+							break;
+
+						case SDLK_RIGHT:
+							right_arrow_scale = 1;
+							if (start == 0 && chosen_level < 4 && level_loaded == 0)
+								chosen_level++;
 							break;
 
 						case SDLK_SPACE:
