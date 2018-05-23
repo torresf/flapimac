@@ -17,6 +17,16 @@ int main(int argc, char** argv){
 	SDL_WM_SetCaption("Flapimac", NULL);
 	resizeViewport();
 
+	/* Création du contexte audio SDL */
+
+	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
+	{
+	  printf("%s", Mix_GetError());
+	}
+	Mix_Music *musique; //Création du pointeur de type Mix_Music
+	musique = Mix_LoadMUS("./music/musique_fond.mp3"); //Chargement de la musique
+	Mix_PlayMusic(musique, -1); //Joue infiniment la musique
+
 	World world;
 	initWorld(&world);
 
@@ -285,6 +295,33 @@ int main(int argc, char** argv){
 							}
 							break;
 
+						case SDLK_p: 
+		                    if(Mix_PausedMusic() == 1)//Si la musique est en pause
+		                    {
+		                    	printf("Play musique\n");
+		                        Mix_ResumeMusic(); //Reprendre la musique
+		                    }
+		                    else
+		                    {
+		                    	printf("Pause musique\n");
+		                        Mix_PauseMusic(); //Mettre en pause la musique
+		                    }
+		                    break;
+		                case SDLK_m:
+		                	printf("Stop musique\n");
+		                    Mix_HaltMusic(); //Arrête la musique
+		                    break;
+
+		                case SDLK_KP_PLUS:
+		                	printf("volume : +1\n");
+		                	Mix_VolumeMusic(MIX_MAX_VOLUME + 1);
+		                	break;
+
+		                case SDLK_KP_MINUS:
+		                	printf("volume : -1\n");
+		                	Mix_VolumeMusic(MIX_MAX_VOLUME - 1);
+		                	break;
+
 						default:
 							break;
 					}
@@ -350,6 +387,9 @@ int main(int argc, char** argv){
 	}
 
 	deleteWorld(&world);
+
+	Mix_FreeMusic(musique); //Libération de la musique
+	Mix_CloseAudio(); //Fermeture de l'API
 
 	/* Liberation des ressources associées à la SDL */ 
 	SDL_Quit();

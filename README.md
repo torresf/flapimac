@@ -27,4 +27,3 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 - [ ] Bande de couleur : Accélération du joueur jusqu'à la prochaine bande / pendant un temps imparti
 - [ ] Multijoueur
 - [ ] Déplacement gauche/droite
-- [ ] Vidéo "t'es mauvais Jack" si le joueur perd au début -> gif ?

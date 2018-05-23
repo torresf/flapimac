@@ -1,6 +1,6 @@
 CC       =  gcc
 CFLAGS   = -Wall -O2 -g
-LIB      = -lSDL -lGLU -lGL -lm -lSDL_image
+LIB      = -lSDL -lGLU -lGL -lm -lSDL_image -lSDL_mixer
 
 SRC_PATH = src
 OBJ_PATH = obj

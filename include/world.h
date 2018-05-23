@@ -5,6 +5,7 @@
 #include "player.h"
 #include "display.h"
 #include <time.h>
+#include <SDL/SDL_mixer.h>
 
 #define MAX_SIZE 2000
 
