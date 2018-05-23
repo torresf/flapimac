@@ -310,16 +310,6 @@ int main(int argc, char** argv){
 		                    Mix_HaltMusic(); //Arrête la musique
 		                    break;
 
-		                case SDLK_KP_PLUS:
-		                	printf("volume : +1\n");
-		                	MIX_MAX_VOLUME += 1;
-		                	break;
-
-		                case SDLK_KP_MINUS:
-		                	printf("volume : -1\n");
-		                	MIX_MAX_VOLUME -= 1;
-		                	break;
-
 						default:
 							break;
 					}
