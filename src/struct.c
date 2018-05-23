@@ -97,8 +97,17 @@ int checkMissilesIntersections(World* world) {
 
 /* Renvoie 1 si les deux éléments entrent en collision, 0 sinon */
 int collided(Element a, Element b) {
-	return (abs(a.x - b.x) * 2 < a.width + b.width) && (abs(a.y - b.y) * 2 < a.height + b.height); // "2" correpond à la somme des hauteurs et à la somme des largeurs
-}
+    // Collision axe x
+    int collisionX = 0;
+    if (a.x + a.width >= b.x && b.x + b.width >= a.x)
+    	collisionX = 1;
+    // Collision axe y
+    int collisionY = 0;
+    if (a.y + a.height >= b.y && b.y + b.height >= a.y)
+        collisionY = 1;
+    // Collision seulement si les deux axes
+    return collisionX * collisionY;
+} 
 
 /* Fonction qui vide la mémoire de tous les éléments de la liste passée en paramètre sans valeur de retour. Supprime d'abord les missiles de la listes si il y en a */
 void deleteElements(ElementList* list) {

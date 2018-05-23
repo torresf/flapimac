@@ -30,7 +30,7 @@ GLuint createRGBTexture(const char* theFileName);
 GLuint createRGBATexture(const char* theFileName);
 
 /* Affiche la texture dont l'id est passé en paramètre */
-void displayTexture(GLuint idTexture);
+void displayTexture(GLuint idTexture, float height, float width);
 
 /* Supprime la texture */
 void clearTexture(GLuint* idTexture);

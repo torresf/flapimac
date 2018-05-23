@@ -69,11 +69,12 @@ void drawElements(ElementList list) {
     } */
 
     while (list) {
+        
         glPushMatrix();
-            glTranslatef(0.5 + list->x, 0.5 + list->y, 0);
+            glTranslatef(list->width / 2 + list->x, list->height / 2 + list->y, 0);
             if (list->type == 0)
                 glRotatef(list->speed_y * 60, 0, 0, 1);
-            displayTexture(list->texture);
+            displayTexture(list->texture, list->width, list->height);
         glPopMatrix();
         list = list->next;
     }
@@ -134,20 +135,20 @@ GLuint createRGBATexture(const char* theFileName){
 }
 
 /* Affiche la texture dont l'id est passé en paramètre */
-void displayTexture(GLuint idTexture){
+void displayTexture(GLuint idTexture, float width, float height){
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, idTexture);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glBegin(GL_QUADS);
         glTexCoord2f(0 , 0);
-        glVertex2f(-0.5 , 0.5);
+        glVertex2f(-(width/2) , height/2);
         glTexCoord2f(1 , 0);
-        glVertex2f(0.5, 0.5);
+        glVertex2f(width/2, height/2);
         glTexCoord2f(1 , 1);
-        glVertex2f(0.5, -0.5);
+        glVertex2f(width/2, -(height/2));
         glTexCoord2f(0 , 1);
-        glVertex2f(-0.5, -0.5);
+        glVertex2f(-(width/2), -(height/2));
     glEnd();
     
     glDisable(GL_TEXTURE_2D);
