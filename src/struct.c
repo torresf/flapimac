@@ -3,7 +3,7 @@
 /* Fonctions liées aux Elements (joueurs, obstacles, ennemis, bonus) */
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x, y, speed_x, speed_y, shooting_range, shooting_rate passées en paramètre et renvoie le pointeur vers cet espace mémoire Element */
-Element* allocElement(int type, float x, float y, float speed_x, float speed_y, int shooting_range, int shooting_rate, GLuint texture) {
+Element* allocElement(int type, float x, float y, float height, float width, float speed_x, float speed_y, int shooting_range, int shooting_rate, GLuint texture) {
 	Element* element;
 	element = malloc(sizeof(Element));
 	/* Message d'erreur si l'allocation n'a pas fonctionné */
@@ -15,6 +15,8 @@ Element* allocElement(int type, float x, float y, float speed_x, float speed_y, 
 	element->type = type;
 	element->x = x;
 	element->y = y;
+	element->height = height;
+	element->width = width;
 	element->speed_x = speed_x;
 	element->speed_y = speed_y;
 	element->nb_bonus = 0;
@@ -95,7 +97,7 @@ int checkMissilesIntersections(World* world) {
 
 /* Renvoie 1 si les deux éléments entrent en collision, 0 sinon */
 int collided(Element a, Element b) {
-	return (abs(a.x - b.x) * 2 < 2) && (abs(a.y - b.y) * 2 < 2); // "2" correpond à la somme des hauteurs et à la somme des largeurs
+	return (abs(a.x - b.x) * 2 < a.width + b.width) && (abs(a.y - b.y) * 2 < a.height + b.height); // "2" correpond à la somme des hauteurs et à la somme des largeurs
 }
 
 /* Fonction qui vide la mémoire de tous les éléments de la liste passée en paramètre sans valeur de retour. Supprime d'abord les missiles de la listes si il y en a */

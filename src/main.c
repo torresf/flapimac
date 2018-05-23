@@ -17,6 +17,7 @@ int main(int argc, char** argv){
 	SDL_WM_SetCaption("Flapimac", NULL);
 	resizeViewport();
 
+	GLuint background = createRGBTexture("./textures/level_1/fond.jpg");
 
 	World world;
 	initWorld(&world);
@@ -31,9 +32,8 @@ int main(int argc, char** argv){
 	int chosen_level = 1;
 	int level_loaded = 0;
 
-	/* Chargement des textures de background et malus */
-	GLuint background = createRGBTexture("./textures/fond.jpg");
-	GLuint malus = createRGBATexture("./textures/malus.png");
+	/* Load malus texture */
+	GLuint malus = createRGBATexture("./textures/main/malus.png");
 
 	/* Boucle d'affichage */
 	while(loop) {
@@ -142,7 +142,7 @@ int main(int argc, char** argv){
 			/* Evenement de tir */
 			if (shooting == 1 && player_loaded >= world.player->shooting_rate) {
 				// Création d'un élement missile et ajout à la liste
-				addElementToList(allocElement(4, world.player->x+1, world.player->y, world.player->speed_x + 0.2, 0, 0, 0, malus), &(world.player->missiles));	
+				addElementToList(allocElement(4, world.player->x+1, world.player->y, 0.2, 0.2, world.player->speed_x + 0.2, 0, 0, 0, malus), &(world.player->missiles));	
 				player_loaded = 0;
 			}
 			player_loaded++;

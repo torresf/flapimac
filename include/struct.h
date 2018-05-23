@@ -12,6 +12,7 @@ typedef struct point {
 typedef struct element {
 	int type; // Type de l'élément (0: Player, 1: Obstacle, 2: Enemy, 3: Bonus, 4: Missile, 5: Ligne d'arrivée, 6: Obstacle cassable)
 	float x, y; // Coordonnées de l'élément
+	float height, width; // Hauteur et largeur de l'élément
 	float speed_x, speed_y; // Vitesse de l'élément
 	int nb_bonus; // Nombre de bonus récupérés
 	int shooting_range; // Portée de tir
@@ -27,7 +28,7 @@ typedef struct world {
 } World;
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x,y,r,g,b passées en paramètre et renvoie le pointeur vers cet espace mémoire */
-Element* allocElement(int type, float x, float y, float speed_x, float speed_y, int shooting_range, int shooting_rate, GLuint texture);
+Element* allocElement(int type, float x, float y, float height, float width, float speed_x, float speed_y, int shooting_range, int shooting_rate, GLuint texture);
 
 /* Fonction qui ajoute l'adresse d'un Element passé en paramètre à une liste chainée passée en paramètre sans valeur de retour */
 void addElementToList(Element* element, ElementList* list);
