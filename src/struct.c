@@ -3,7 +3,7 @@
 /* Fonctions liées aux Elements (joueurs, obstacles, ennemis, bonus) */
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x, y, speed_x, speed_y, shooting_range, shooting_rate passées en paramètre et renvoie le pointeur vers cet espace mémoire Element */
-Element* allocElement(int type, float x, float y, float width, float height, float speed_x, float speed_y, int shooting_range, int shooting_rate, GLuint texture) {
+Element* allocElement(int type, float x, float y, float width, float height, float speed_x, float speed_y, int shooting_range, int shooting_rate, int hp, GLuint texture) {
 	Element* element;
 	element = malloc(sizeof(Element));
 	/* Message d'erreur si l'allocation n'a pas fonctionné */
@@ -23,6 +23,7 @@ Element* allocElement(int type, float x, float y, float width, float height, flo
 	element->shooting_range = shooting_range;
 	element->shooting_rate = shooting_rate;
 	element->loaded = 0;
+	element->hp = hp;
 	element->next = NULL;
 	element->missiles = NULL;
 	element->texture = texture;
@@ -69,9 +70,17 @@ int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove)
 	while (tmp2) {
 		while (tmp1) {
 			if (checkSquareSquareCollision(*tmp1, *tmp2) == 1) {
-				removeElementFromList(tmp2, list2);
+				printf("Vie tmp 1 : %d\n", tmp1->hp);
+				printf("Vie tmp 2 : %d\n", tmp2->hp);
+				tmp2->hp -= 1;
+				if (tmp2->hp <= 0) {
+					removeElementFromList(tmp2, list2);
+				}
 				if (doubleRemove == 1){
-					removeElementFromList(tmp1, list1);
+					tmp1->hp -= 1;
+					if (tmp1->hp <= 0) {
+						removeElementFromList(tmp1, list1);
+					}
 				}
 				return 1;
 			}

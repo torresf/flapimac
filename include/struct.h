@@ -18,6 +18,7 @@ typedef struct element {
 	int shooting_range; // Portée de tir
 	int shooting_rate; // Cadence de tir
 	int loaded; // Rechargement
+	int hp; // Points de vie
 	struct element* next; // Elément suivant
 	struct element* missiles; // Liste chainée de missiles
 	GLuint texture; // Texture de l'élément
@@ -28,7 +29,7 @@ typedef struct world {
 } World;
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x,y,r,g,b passées en paramètre et renvoie le pointeur vers cet espace mémoire */
-Element* allocElement(int type, float x, float y, float width, float height, float speed_x, float speed_y, int shooting_range, int shooting_rate, GLuint texture);
+Element* allocElement(int type, float x, float y, float width, float height, float speed_x, float speed_y, int shooting_range, int shooting_rate, int hp, GLuint texture);
 
 /* Fonction qui ajoute l'adresse d'un Element passé en paramètre à une liste chainée passée en paramètre sans valeur de retour */
 void addElementToList(Element* element, ElementList* list);

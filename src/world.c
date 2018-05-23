@@ -116,28 +116,27 @@ void loadLevel(World *world, int chosen_level) {
 					/* Joueur */
 					float player_width = 1.31;
 					float player_height = 0.89;
-
-					addElementToList(allocElement(0, j, (NB_UNITS_Y - (1-(1-player_height)/2)) - i, player_width, player_height, 0.10, 0, 5, 30, player), &((*world).player));
+					addElementToList(allocElement(0, j, (NB_UNITS_Y - (1-(1-player_height)/2)) - i, player_width, player_height, 0.10, 0, 5, 30, 10, player), &((*world).player));
 				}
 				if (r == 0 && g == 0 && b == 0) {
 					/* Obstacle */
-					addElementToList(allocElement(1, j, (NB_UNITS_Y - 1) - i, 1, 1, 0, 0, 0, 0, n_o_1), &((*world).obstacleList));
+					addElementToList(allocElement(1, j, (NB_UNITS_Y - 1) - i, 1, 1, 0, 0, 0, 0, 1, n_o_1), &((*world).obstacleList));
 				}
 				if (r == 255 && g == 0 && b == 0) {
 					/* Ennemi */
-					addElementToList(allocElement(2, j, (NB_UNITS_Y - 1) - i, 1, 1, 0, 0.04, -4, 30, ennemi), &((*world).enemyList));
+					addElementToList(allocElement(2, j, (NB_UNITS_Y - 1) - i, 1, 1, 0, 0.04, -4, 30, 2, ennemi), &((*world).enemyList));
 				}
 				if (r == 0 && g == 255 && b == 0) {
 					/* Bonus */
-					addElementToList(allocElement(3, j, (NB_UNITS_Y - 1) - i, 1, 1, 0, 0.1, 0, 0, bonus), &((*world).bonusList));
+					addElementToList(allocElement(3, j, (NB_UNITS_Y - 1) - i, 1, 1, 0, 0.1, 0, 0, 1, bonus), &((*world).bonusList));
 				}
 				if (r == 255 && g == 255 && b == 0) {
 					/* Ligne d'arrivée */
-					addElementToList(allocElement(5, j, (NB_UNITS_Y - 1) - i, 1, 1, 0, 0, 0, 0, finish), &((*world).finishLineList));
+					addElementToList(allocElement(5, j, (NB_UNITS_Y - 1) - i, 1, 1, 0, 0, 0, 0, 1, finish), &((*world).finishLineList));
 				}
 				if (r == 0 && g == 255 && b == 255) {
 					/* Obstacle cassable */
-					addElementToList(allocElement(1, j, (NB_UNITS_Y - 1) - i, 1, 1, 0, 0, 0, 0, b_o_1), &((*world).brokableObstacleList));
+					addElementToList(allocElement(1, j, (NB_UNITS_Y - 1) - i, 1, 1, 0, 0, 0, 0, 1, b_o_1), &((*world).brokableObstacleList));
 				}
 			}
 		}
