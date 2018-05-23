@@ -70,7 +70,9 @@ void loadLevel(World *world, int chosen_level) {
 	 * Première ligne du fichier 
 	 * <type>
 	*/
-	fgets(line, sizeof line, level);
+	if (fgets(line, sizeof line, level) == NULL)
+		exit(0);
+
 	if (strcmp(line, "P3\n") != 0) {
 		printf("Erreur : Format du fichier non pris en charge.\n");
 		exit(0);
@@ -80,10 +82,12 @@ void loadLevel(World *world, int chosen_level) {
 	 * Deuxième ligne du fichier 
 	 * <width> <height>
 	*/
-	fgets(line, sizeof line, level);
+	if (fgets(line, sizeof line, level) == NULL)
+		exit(0);
 	if (line[0] == '#')
 	{
-		fgets(line, sizeof line, level);
+		if (fgets(line, sizeof line, level) == NULL)
+			exit(0);
 	}
 	sscanf(line, "%d %d", &width, &height);
 
@@ -91,16 +95,20 @@ void loadLevel(World *world, int chosen_level) {
 	 * Troisième ligne du fichier 
 	 * <color_max>
 	*/
-	fgets(line, sizeof line, level);
+	if (fgets(line, sizeof line, level) == NULL)
+		exit(0);
 	sscanf(line, "%d", &color_max);
 
 	for (i = 0; i < height; ++i) {	
 		for (j = 0; j < width; ++j)	{
-			fgets(line, 64, level);
+			if (fgets(line, sizeof line, level) == NULL)
+				exit(0);
 			sscanf(line, "%d", &r);
-			fgets(line, 64, level);
+			if (fgets(line, sizeof line, level) == NULL)
+				exit(0);
 			sscanf(line, "%d", &g);
-			fgets(line, 64, level);
+			if (fgets(line, sizeof line, level) == NULL)
+					exit(0);
 			sscanf(line, "%d", &b);
 			
 			if (r != 255 || g != 255 || b != 255) {
