@@ -79,6 +79,11 @@ int main(int argc, char** argv){
 					glTranslatef(1, NB_UNITS_Y-1, 0);
 					displayTexture(esc_text, 1.04, 0.55);
 				glPopMatrix();
+				/* Affichage du plateau */
+				glPushMatrix();
+					glTranslatef(2 - world.player->x, 0, 0); // Translation du monde pour suivre le joueur
+					drawWorld(world);
+				glPopMatrix();
 			} else {
 				// Menu sélection du niveau
 				if (chosen_level != 1) {
@@ -229,14 +234,6 @@ int main(int argc, char** argv){
 				case SDL_KEYDOWN:
 					// printf("touche pressée (code = %d)\n", e.key.keysym.sym);
 					switch(e.key.keysym.sym) {
-
-						case 256: // 0
-							chosen_level = 0;
-							break;
-
-						case 257: // 1
-							chosen_level = 1;
-							break;
 
 						case SDLK_ESCAPE:
 							if (start == 1) {

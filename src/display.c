@@ -69,12 +69,30 @@ void drawElements(ElementList list) {
     } */
 
     while (list) {
-        
         glPushMatrix();
             glTranslatef(list->width / 2 + list->x, list->height / 2 + list->y, 0);
-            if (list->type == 0)
+            if (list->type == 0) {
                 glRotatef(list->speed_y * 60, 0, 0, 1);
+            }
             displayTexture(list->texture, list->width, list->height);
+            if (list->type == 0) {
+                glColor3ub(76, 59, 45);
+                glPushMatrix();
+                    glTranslatef((list->width / 2) - 0.05, 0, 0);
+                    glScalef(.25, 1, 0);
+                    glPushMatrix();
+                        glRotatef(list->x * -120, 0, 0, 1);
+                        glScalef(.2, 1, 0);
+                        drawSquare(1);
+                    glPopMatrix();
+                    glPushMatrix();
+                        glRotatef((list->x * -120) + 90, 0, 0, 1);
+                        glScalef(.15, 1, 0);
+                        drawSquare(1);
+                    glPopMatrix();
+                glPopMatrix();
+                glColor3ub(255, 255, 255);
+            }
         glPopMatrix();
         list = list->next;
     }

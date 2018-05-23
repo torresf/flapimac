@@ -106,8 +106,8 @@ void loadLevel(World *world, int chosen_level) {
 			if (r != 255 || g != 255 || b != 255) {
 				if (r == 0 && g == 0 && b == 255) {
 					/* Joueur */
-					float player_width = 1.6;
-					float player_height = player_width/2;
+					float player_width = 1.31;
+					float player_height = 0.89;
 
 					addElementToList(allocElement(0, j, (NB_UNITS_Y - (1-(1-player_height)/2)) - i, player_width, player_height, 0.10, 0, 5, 30, player), &((*world).player));
 				}
