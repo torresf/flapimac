@@ -17,7 +17,6 @@ int main(int argc, char** argv){
 	SDL_WM_SetCaption("Flapimac", NULL);
 	resizeViewport();
 
-	GLuint background = createRGBTexture("./textures/level_1/fond.jpg");
 
 	World world;
 	initWorld(&world);
@@ -34,6 +33,10 @@ int main(int argc, char** argv){
 
 	/* Load malus texture */
 	GLuint malus = createRGBATexture("./textures/main/malus.png");
+	GLuint background1 = createRGBTexture("./textures/level_1/fond.jpg");
+	GLuint background2 = createRGBTexture("./textures/level_2/fond.jpg");
+	GLuint background3 = createRGBTexture("./textures/level_3/fond.jpg");
+	GLuint background4 = createRGBTexture("./textures/level_4/fond.jpg");
 
 	/* Boucle d'affichage */
 	while(loop) {
@@ -49,14 +52,16 @@ int main(int argc, char** argv){
 			// Affiche le fond du niveau
 			switch (chosen_level) {
 				case 1:
-					displayBackground(background, NB_UNITS_X, NB_UNITS_Y);
+					displayBackground(background1, NB_UNITS_X, NB_UNITS_Y);
 					break;
 				case 2:
-					displayBackground(malus, NB_UNITS_X, NB_UNITS_Y);
+					displayBackground(background2, NB_UNITS_X, NB_UNITS_Y);
 					break;
 				case 3:
+					displayBackground(background3, NB_UNITS_X, NB_UNITS_Y);
 					break;
 				case 4:
+					displayBackground(background4, NB_UNITS_X, NB_UNITS_Y);
 					break;
 				default:
 					break;
@@ -71,7 +76,22 @@ int main(int argc, char** argv){
 			/* Affichage et parallax de la texture de fond */
 			glPushMatrix();
 				glTranslatef(translation, 0, 0);
-				displayBackground(background, NB_UNITS_X, NB_UNITS_Y); // Affiche le fond du niveau
+				switch (chosen_level) {
+					case 1:
+						displayBackground(background1, NB_UNITS_X, NB_UNITS_Y);
+						break;
+					case 2:
+						displayBackground(background2, NB_UNITS_X, NB_UNITS_Y);
+						break;
+					case 3:
+						displayBackground(background3, NB_UNITS_X, NB_UNITS_Y);
+						break;
+					case 4:
+						displayBackground(background4, NB_UNITS_X, NB_UNITS_Y);
+						break;
+					default:
+						break;
+				}
 			glPopMatrix();
 			translation -= 0.02;
 
@@ -189,13 +209,14 @@ int main(int argc, char** argv){
 								printf("Pause\n");
 								start = 0;
 							} else {
-								printf("Le jeu est déjà en pause\n");
+								printf("Le jeu est déjà en pause.\n");
 								if (level_loaded == 1) {
-									printf("Une partie a été lancée, on retourne au menu et on réinitialise\n");
+									printf("Une partie a été lancée, on retourne au menu et on réinitialise.\n");
 									level_loaded = 0;
 									initWorld(&world);
+									translation = 0;
 								} else {
-									printf("Aucune partie n'a été lancée, on quitte\n");
+									printf("Aucune partie n'a été lancée, on quitte.\n");
 									loop = 0;
 								}
 							}

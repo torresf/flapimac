@@ -32,24 +32,12 @@ void deleteWorld(World *world) {
 /* Chargement du niveau */
 void loadLevel(World *world, int chosen_level) {
 	FILE *level;
+		
+	char level_name[64];
+	sprintf(level_name, "levels/level%d.ppm", chosen_level);
 	
-	/* opening file for reading */
-	switch (chosen_level) {
-		case 1:
-			level = fopen("levels/level1.ppm", "r");
-			break;
-		case 2:
-			level = fopen("levels/level2.ppm", "r");
-			break;
-		case 3:
-			level = fopen("levels/level3.ppm", "r");
-			break;
-		case 4:
-			level = fopen("levels/level4.ppm", "r");
-			break;
-		default:
-			break;
-	}
+	/* Ouverture du fichier de niveau pour la lecture */
+	level = fopen(level_name, "r");
 	
 	if (level == NULL) {
 		perror("Error opening file");
@@ -59,15 +47,21 @@ void loadLevel(World *world, int chosen_level) {
 	/* Load textures */
 
 	/* Textures éléments */
-    GLuint ennemi = createRGBATexture("./textures/main/ennemi.png");
-    GLuint player = createRGBATexture("./textures/main/avion.png");
-    GLuint bonus = createRGBATexture("./textures/main/bonus.png");
+    GLuint ennemi = createRGBATexture("textures/main/ennemi.png");
+    GLuint player = createRGBATexture("textures/main/avion.png");
+    GLuint bonus = createRGBATexture("textures/main/bonus.png");
 
     /* Textures obstacles */
-    GLuint finish = createRGBATexture("./textures/main/finish.png");
-    GLuint b_o_1 = createRGBATexture("./textures/level_1/obstacle_cassable_1.png");
-    GLuint n_o_1 = createRGBATexture("./textures/level_1/obstacle_normal_1.png");
+	char obstacle1_path[64];
+	char obstacle2_path[64];
+	sprintf(obstacle1_path, "textures/level_%d/obstacle_cassable_1.png", chosen_level);
+	sprintf(obstacle2_path, "textures/level_%d/obstacle_normal_1.png", chosen_level);
 
+    GLuint finish = createRGBATexture("textures/main/finish.png");
+    GLuint b_o_1 = createRGBATexture(obstacle1_path);
+    GLuint n_o_1 = createRGBATexture(obstacle2_path);
+
+    /* Traitement du fichier ppm */
 	char line[64];
 	int r, g, b;
 	int width, j, height, i, color_max;
