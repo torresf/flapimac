@@ -17,20 +17,22 @@ int main(int argc, char** argv){
 	SDL_WM_SetCaption("Flapimac", NULL);
 	resizeViewport();
 
-	GLuint background = createRGBTexture("./textures/fond.jpg");
 
 	World world;
 	initWorld(&world);
-	loadLevel(&world);
-	
+	// loadLevel(&world);
+
 	float translation = 0.;
 	int player_status = 0;
 	int loop = 1;
 	int shooting = 0;
-	int loaded = world.player->shooting_rate;
-	// int enemy_loaded = 0;
+	int start = 0;
+	int player_loaded = 0;
+	int chosen_level = 1;
+	int level_loaded = 0;
 
-	/* Load malus texture */
+	/* Chargement des textures de background et malus */
+	GLuint background = createRGBTexture("./textures/fond.jpg");
 	GLuint malus = createRGBATexture("./textures/malus.png");
 
 	/* Boucle d'affichage */
@@ -40,96 +42,121 @@ int main(int argc, char** argv){
 		Uint32 startTime = SDL_GetTicks();
 		
 		/* Code de dessin */
-
 		glClear(GL_COLOR_BUFFER_BIT); // Toujours commencer par clear le buffer
 
-		/* Affichage et parallax de la texture de fond */
-		glPushMatrix();
-			glTranslatef(translation, 0, 0);
-			displayBackground(background, NB_UNITS_X, NB_UNITS_Y); // Affiche le fond du niveau
-		glPopMatrix();
-		translation -= 0.02;
+		if (start == 0) {
+			/* Menu */
+			// Affiche le fond du niveau
+			switch (chosen_level) {
+				case 1:
+					displayBackground(background, NB_UNITS_X, NB_UNITS_Y);
+					break;
+				case 2:
+					displayBackground(malus, NB_UNITS_X, NB_UNITS_Y);
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+				default:
+					break;
+			}
+		} else {
+			// Lancement du jeu
+			if (level_loaded == 0) {
+				loadLevel(&world, chosen_level);
+			}
+			level_loaded = 1;
 
-		/* Déplacement du joueur */
-		if (player_status == 1)
-			moveUp(&world.player);
-		else if (player_status == -1)
-			moveDown(&world.player);
-		else if (player_status == 0)
-			slowDown(&world.player);
+			/* Affichage et parallax de la texture de fond */
+			glPushMatrix();
+				glTranslatef(translation, 0, 0);
+				displayBackground(background, NB_UNITS_X, NB_UNITS_Y); // Affiche le fond du niveau
+			glPopMatrix();
+			translation -= 0.02;
 
-		movePlayer(&world.player); // Applique les transformations de positions au joueur
-		checkPlayerPos(&world.player); // Recentre le joueur à l'intérieur si il sort de la fenêtre
+			/* Déplacement du joueur */
+			if (player_status == 1)
+				moveUp(&world.player);
+			else if (player_status == -1)
+				moveDown(&world.player);
+			else if (player_status == 0)
+				slowDown(&world.player);
 
-		/* Déplacement des missiles */
-		moveMissiles(&(world.player));
+			movePlayer(&world.player); // Applique les transformations de positions au joueur
+			checkPlayerPos(&world.player); // Recentre le joueur à l'intérieur si il sort de la fenêtre
 
-		if (world.enemyList) {
-			moveVertical(&(world.enemyList));
-			moveMissiles(&(world.enemyList));
-		}
+			/* Déplacement des missiles */
+			moveMissiles(&(world.player));
 
-		if (world.bonusList)
-			moveVertical(&(world.bonusList));
+			if (world.enemyList) {
+				moveVertical(&(world.enemyList));
+				moveMissiles(&(world.enemyList));
+			}
 
-		/* Gestion des collisions */
-		// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
-		if (checkIntersections(&(world.player), &(world.obstacleList), 0) || checkIntersections(&(world.player), &(world.enemyList),0) || checkIntersections(&(world.player), &(world.brokableObstacleList),0)) { 
-			printf("Partie perdue. Sortie du programme.\n");
-			break;
-		}
+			if (world.bonusList)
+				moveVertical(&(world.bonusList));
 
-		if (world.enemyList) {
-			if (checkMissilesIntersections(&world)) {
-				printf("Touché par missile ennemi.\n");
+			/* Gestion des collisions */
+			// Suppression du joueur lorsqu'il touche un obstacle ou un ennemi, et sortie de la boucle
+			if (checkIntersections(&(world.player), &(world.obstacleList), 0) || checkIntersections(&(world.player), &(world.enemyList),0) || checkIntersections(&(world.player), &(world.brokableObstacleList),0)) { 
+				printf("Partie perdue. Sortie du programme.\n");
 				break;
 			}
-		}
-		
-		// Fin du niveau lorsque le joueur passe la ligne d'arrivée
-		if (checkIntersections(&(world.player), &(world.finishLineList), 0)) { 
-			printf("Niveau terminé\n");
-			break;
-		}
 
-		// Supprime les bonus lorsqu'ils sont récupérés par le joueur)
-		if (checkIntersections(&(world.player), &(world.bonusList), 0)) {
-			printf("Bonus Récupéré\n");
-			world.player->nb_bonus++;
+			if (world.enemyList) {
+				if (checkMissilesIntersections(&world)) {
+					printf("Touché par missile ennemi.\n");
+					break;
+				}
+			}
+			
+			// Fin du niveau lorsque le joueur passe la ligne d'arrivée
+			if (checkIntersections(&(world.player), &(world.finishLineList), 0)) { 
+				printf("Niveau terminé\n");
+				break;
+			}
+
+			// Supprime les bonus lorsqu'ils sont récupérés par le joueur)
+			if (checkIntersections(&(world.player), &(world.bonusList), 0)) {
+				printf("Bonus Récupéré\n");
+				world.player->nb_bonus++;
+			}
+
+			// Supprime un ennemi lorsqu'on lui tire dessus
+			if (checkIntersections(&(world.player->missiles), &(world.enemyList), 1)) { 
+				printf("Ennemi tué\n");
+			}
+
+			// Supprime un obstacle cassable lorsqu'on lui tire dessus
+			if (checkIntersections(&(world.player->missiles), &(world.brokableObstacleList), 1)) { 
+				printf("Obstacle détruit\n");
+			}
+
+			// Détruit un missile lorsqu'il touche un obstacle
+			checkIntersections(&(world.obstacleList), &(world.player->missiles), 0);
+			
+			// Calcul les caractéristiques du joueur en fonction du nombre de bonus
+			checkBonus(&world.player);
+
+			/* Evenement de tir */
+			if (shooting == 1 && player_loaded >= world.player->shooting_rate) {
+				// Création d'un élement missile et ajout à la liste
+				addElementToList(allocElement(4, world.player->x+1, world.player->y, world.player->speed_x + 0.2, 0, 0, 0, malus), &(world.player->missiles));	
+				player_loaded = 0;
+			}
+			player_loaded++;
+			
+			/* Evenement de tir ennemi */
+			enemyShooting(&world.enemyList, malus);
+
+			/* Affichage du plateau */
+			glPushMatrix();
+				glTranslatef(2 - world.player->x, 0, 0); // Translation du monde pour suivre le joueur
+				drawWorld(world);
+			glPopMatrix();
+
 		}
-
-		// Supprime un ennemi lorsqu'on lui tire dessus
-		if (checkIntersections(&(world.player->missiles), &(world.enemyList), 1)) { 
-			printf("Ennemi tué\n");
-		}
-
-		// Supprime un obstacle cassable lorsqu'on lui tire dessus
-		if (checkIntersections(&(world.player->missiles), &(world.brokableObstacleList), 1)) { 
-			printf("Obstacle détruit\n");
-		}
-
-		// Détruit un missile lorsqu'il touche un obstacle
-		checkIntersections(&(world.obstacleList), &(world.player->missiles), 0);
-		
-		// Calcul les caractéristiques du joueur en fonction du nombre de bonus
-		checkBonus(&world.player);
-
-		/* Evenement de tir */
-		if (shooting == 1 && loaded >= world.player->shooting_rate) {
-			// Création d'un élement missile et ajout à la liste
-			addElementToList(allocElement(4, world.player->x+1, world.player->y, world.player->speed_x + 0.2, 0, 0, 0, malus), &(world.player->missiles));	
-			loaded = 0;
-		}
-		loaded++;
-		
-		/* Evenement de tir ennemi */
-		enemyShooting(&world.enemyList, malus);
-
-		/* Affichage du plateau */
-		glPushMatrix();
-			glTranslatef(2 - world.player->x, 0, 0); // Translation du monde pour suivre le joueur
-			drawWorld(world);
-		glPopMatrix();
 
 		/* Boucle traitant les evenements */
 		SDL_Event e;
@@ -149,8 +176,29 @@ int main(int argc, char** argv){
 					// printf("touche pressée (code = %d)\n", e.key.keysym.sym);
 					switch(e.key.keysym.sym) {
 
-						case SDLK_q:
-							loop = 0;
+						case 256: // 0
+							chosen_level = 0;
+							break;
+
+						case 257: // 1
+							chosen_level = 1;
+							break;
+
+						case SDLK_ESCAPE:
+							if (start == 1) {
+								printf("Pause\n");
+								start = 0;
+							} else {
+								printf("Le jeu est déjà en pause\n");
+								if (level_loaded == 1) {
+									printf("Une partie a été lancée, on retourne au menu et on réinitialise\n");
+									level_loaded = 0;
+									initWorld(&world);
+								} else {
+									printf("Aucune partie n'a été lancée, on quitte\n");
+									loop = 0;
+								}
+							}
 							break;
 
 						case SDLK_UP:
@@ -161,9 +209,23 @@ int main(int argc, char** argv){
 							player_status = -1;
 							break;
 
+						case SDLK_LEFT:
+							if (start == 0 && chosen_level > 1 && level_loaded == 0)
+								chosen_level--;
+							break;
+
+						case SDLK_RIGHT:
+							if (start == 0 && chosen_level < 4 && level_loaded == 0)
+								chosen_level++;
+							break;
+
 						case SDLK_SPACE:
 							// Déclenchement du tir
-							shooting = 1;
+							if (start == 1) {
+								shooting = 1;
+							} else {
+								start = 1;
+							}
 							break;
 
 						default:

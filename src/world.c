@@ -30,12 +30,28 @@ void deleteWorld(World *world) {
 }
 
 /* Chargement du niveau */
-void loadLevel(World *world) {
-	FILE *level1;
-
+void loadLevel(World *world, int chosen_level) {
+	FILE *level;
+	
 	/* opening file for reading */
-	level1 = fopen("levels/level1.ppm", "r");
-	if (level1 == NULL) {
+	switch (chosen_level) {
+		case 1:
+			level = fopen("levels/level1.ppm", "r");
+			break;
+		case 2:
+			level = fopen("levels/level2.ppm", "r");
+			break;
+		case 3:
+			level = fopen("levels/level3.ppm", "r");
+			break;
+		case 4:
+			level = fopen("levels/level4.ppm", "r");
+			break;
+		default:
+			break;
+	}
+	
+	if (level == NULL) {
 		perror("Error opening file");
 		exit(0);
 	}
@@ -66,7 +82,7 @@ void loadLevel(World *world) {
 	 * Première ligne du fichier 
 	 * <type>
 	*/
-	fgets(line, sizeof line, level1);
+	fgets(line, sizeof line, level);
 	if (strcmp(line, "P3\n") != 0) {
 		printf("Erreur : Format du fichier non pris en charge.\n");
 		exit(0);
@@ -76,10 +92,10 @@ void loadLevel(World *world) {
 	 * Deuxième ligne du fichier 
 	 * <width> <height>
 	*/
-	fgets(line, sizeof line, level1);
+	fgets(line, sizeof line, level);
 	if (line[0] == '#')
 	{
-		fgets(line, sizeof line, level1);
+		fgets(line, sizeof line, level);
 	}
 	sscanf(line, "%d %d", &width, &height);
 
@@ -87,16 +103,16 @@ void loadLevel(World *world) {
 	 * Troisième ligne du fichier 
 	 * <color_max>
 	*/
-	fgets(line, sizeof line, level1);
+	fgets(line, sizeof line, level);
 	sscanf(line, "%d", &color_max);
 
 	for (i = 0; i < height; ++i) {	
 		for (j = 0; j < width; ++j)	{
-			fgets(line, 64, level1);
+			fgets(line, 64, level);
 			sscanf(line, "%d", &r);
-			fgets(line, 64, level1);
+			fgets(line, 64, level);
 			sscanf(line, "%d", &g);
-			fgets(line, 64, level1);
+			fgets(line, 64, level);
 			sscanf(line, "%d", &b);
 			
 			if (r != 255 || g != 255 || b != 255) {
@@ -127,7 +143,7 @@ void loadLevel(World *world) {
 			}
 		}
 	}
-	fclose (level1);
+	fclose (level);
 }
 
 int random_0_1(void){

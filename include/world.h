@@ -28,7 +28,7 @@ void initWorld(World *world);
 void deleteWorld(World *world);
 
 /* Chargement du niveau */
-void loadLevel(World *world);
+void loadLevel(World *world, int chosen_level);
 
 /* Return random number between 0 and 1 */
 int random_0_1(void);
