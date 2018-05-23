@@ -8,13 +8,13 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 - [x] Implémenter les missiles
 - [x] Ajouter des textures
 - [x] Créer des obstacles destructibles
+- [x] Créer plusieurs niveaux
 - [ ] Menu (Accueil, écran intermédiaire niveau, écran de partie perdue)
-- [ ] Créer plusieurs niveaux
 - [ ] Retravailler les Bonus / Malus
+- [ ] Vie du joueur
 
 # Idées améliorations
 - [ ] Gestion du score
-- [ ] Vie du joueur
 - [ ] Vie des ennemis
 - [ ] Aléatoire sur la selection des textures des obstacles pour faire moins monotone
 - [ ] Coefficients aléatoires

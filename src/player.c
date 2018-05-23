@@ -99,7 +99,8 @@ void enemyShooting(ElementList* enemyList, GLuint malus) {
 	while (tmp) {
 		if (tmp->loaded >= tmp->shooting_rate) {
 			// Création d'un élement missile et ajout à la liste
-			addElementToList(allocElement(4, tmp->x - 1, tmp->y + 0.4, 0.2, 0.2, -0.2, 0, 0, 0, malus), &(tmp->missiles));
+			float missile_size = 0.4;
+			addElementToList(allocElement(4, tmp->x - tmp->width/2, tmp->y + (tmp->height-missile_size)/2, missile_size, missile_size, -0.2, 0, 0, 0, malus), &(tmp->missiles));
 			tmp->loaded = 0;
 		}
 		tmp->loaded += 1;

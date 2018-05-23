@@ -161,8 +161,9 @@ int main(int argc, char** argv){
 
 			/* Evenement de tir */
 			if (shooting == 1 && player_loaded >= world.player->shooting_rate) {
+				float missile_size = 0.4;
 				// Création d'un élement missile et ajout à la liste
-				addElementToList(allocElement(4, world.player->x+1, world.player->y + 0.4, 0.2, 0.2, world.player->speed_x + 0.2, 0, 0, 0, malus), &(world.player->missiles));	
+				addElementToList(allocElement(4, world.player->x+world.player->width, world.player->y + (world.player->height - missile_size)/2, missile_size, missile_size, world.player->speed_x + 0.2, 0, 0, 0, malus), &(world.player->missiles));	
 				player_loaded = 0;
 			}
 			player_loaded++;

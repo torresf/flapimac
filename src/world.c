@@ -48,7 +48,7 @@ void loadLevel(World *world, int chosen_level) {
 
 	/* Textures éléments */
     GLuint ennemi = createRGBATexture("textures/main/ennemi.png");
-    GLuint player = createRGBATexture("textures/main/avion.png");
+    GLuint player = createRGBATexture("textures/main/avion_fat.png");
     GLuint bonus = createRGBATexture("textures/main/bonus.png");
 
     /* Textures obstacles */
@@ -106,7 +106,10 @@ void loadLevel(World *world, int chosen_level) {
 			if (r != 255 || g != 255 || b != 255) {
 				if (r == 0 && g == 0 && b == 255) {
 					/* Joueur */
-					addElementToList(allocElement(0, j, (NB_UNITS_Y - 1) - i, 1, 1, 0.10, 0, 5, 30, player), &((*world).player));
+					float player_width = 1.6;
+					float player_height = player_width/2;
+
+					addElementToList(allocElement(0, j, (NB_UNITS_Y - (1-(1-player_height)/2)) - i, player_width, player_height, 0.10, 0, 5, 30, player), &((*world).player));
 				}
 				if (r == 0 && g == 0 && b == 0) {
 					/* Obstacle */

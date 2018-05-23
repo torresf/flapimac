@@ -3,7 +3,7 @@
 /* Fonctions liées aux Elements (joueurs, obstacles, ennemis, bonus) */
 
 /* Fonction qui alloue la mémoire nécessaire pour un Element, initialise ses champs avec les valeurs x, y, speed_x, speed_y, shooting_range, shooting_rate passées en paramètre et renvoie le pointeur vers cet espace mémoire Element */
-Element* allocElement(int type, float x, float y, float height, float width, float speed_x, float speed_y, int shooting_range, int shooting_rate, GLuint texture) {
+Element* allocElement(int type, float x, float y, float width, float height, float speed_x, float speed_y, int shooting_range, int shooting_rate, GLuint texture) {
 	Element* element;
 	element = malloc(sizeof(Element));
 	/* Message d'erreur si l'allocation n'a pas fonctionné */
@@ -68,7 +68,7 @@ int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove)
 	Element* tmp2 = *list2;
 	while (tmp2) {
 		while (tmp1) {
-			if (collided(*tmp1, *tmp2) == 1) {
+			if (checkSquareSquareCollision(*tmp1, *tmp2) == 1) {
 				removeElementFromList(tmp2, list2);
 				if (doubleRemove == 1){
 					removeElementFromList(tmp1, list1);
@@ -96,7 +96,7 @@ int checkMissilesIntersections(World* world) {
 }
 
 /* Renvoie 1 si les deux éléments entrent en collision, 0 sinon */
-int collided(Element a, Element b) {
+int checkSquareSquareCollision(Element a, Element b) {
     // Collision axe x
     int collisionX = 0;
     if (a.x + a.width >= b.x && b.x + b.width >= a.x)
