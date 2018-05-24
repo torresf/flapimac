@@ -45,10 +45,11 @@ void checkPlayerPos(ElementList* player) {
 /* Défini les propriétés du joueur en fonction du nombre de bonus récupérés */
 void checkBonus(ElementList* player) {
 	if ((*player)->nb_bonus == 1) {
-		(*player)->shooting_range = 10;
-	} else if ((*player)->nb_bonus == 2) {
-		(*player)->shooting_rate = 10;
 		(*player)->shooting_range = 20;
+		(*player)->shooting_rate = 15;
+	} else if ((*player)->nb_bonus == 3) {
+		(*player)->shooting_range = 20;
+		(*player)->shooting_rate = 5;
 	}
 }
 

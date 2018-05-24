@@ -54,7 +54,7 @@ void loadLevel(World *world, int chosen_level) {
     /* Textures obstacles */
 	char obstacle1_path[64];
 	char obstacle2_path[64];
-	sprintf(obstacle1_path, "textures/level_%d/obstacle_cassable_2.png", chosen_level);
+	sprintf(obstacle1_path, "textures/level_%d/obstacle_cassable_1.png", chosen_level);
 	sprintf(obstacle2_path, "textures/level_%d/obstacle_normal_1.png", chosen_level);
 
     GLuint finish = createRGBATexture("textures/main/finish.png");
