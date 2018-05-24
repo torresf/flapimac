@@ -42,9 +42,9 @@ int main(int argc, char** argv){
 	float right_arrow_scale = 1.;
 	float left_arrow_scale = 1.;
 
-	/* Load malus texture */
+	/* Load textures */
 	GLuint bonus = createRGBATexture("./textures/main/bonus.png");
-	GLuint malus = createRGBATexture("./textures/main/malus.png");
+	GLuint missile = createRGBATexture("./textures/main/missile.png");
 	GLuint background1 = createRGBTexture("./textures/level_1/fond.jpg");
 	GLuint background2 = createRGBTexture("./textures/level_2/fond.jpg");
 	GLuint background3 = createRGBTexture("./textures/level_3/fond.jpg");
@@ -228,13 +228,13 @@ int main(int argc, char** argv){
 			if (shooting == 1 && player_loaded >= world.player->shooting_rate) {
 				float missile_size = 0.4;
 				// Création d'un élement missile et ajout à la liste
-				addElementToList(allocElement(4, world.player->x+world.player->width, world.player->y + (world.player->height - missile_size)/2, missile_size, missile_size, world.player->speed_x + 0.2, 0, 0, 0, 0, malus), &(world.player->missiles));	
+				addElementToList(allocElement(4, world.player->x+world.player->width, world.player->y + (world.player->height - missile_size)/2, missile_size, missile_size, world.player->speed_x + 0.2, 0, 0, 0, 0, missile), &(world.player->missiles));	
 				player_loaded = 0;
 			}
 			player_loaded++;
 			
 			/* Evenement de tir ennemi */
-			enemyShooting(&world.enemyList, malus);
+			enemyShooting(&world.enemyList, missile);
 
 			/* Affichage du plateau */
 			glPushMatrix();

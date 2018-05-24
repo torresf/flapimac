@@ -9,9 +9,9 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 - [x] Ajouter des textures
 - [x] Créer des obstacles destructibles
 - [x] Créer plusieurs niveaux
-- [ ] Menu (Accueil, écran intermédiaire niveau, écran de partie perdue)
+- [x] Menu (Accueil, écran intermédiaire niveau, écran de partie perdue)
 - [ ] Retravailler les Bonus / Malus
-- [ ] Vie du joueur
+- [x] Vie du joueur
 
 # Idées améliorations
 - [ ] Gestion du score
