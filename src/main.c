@@ -43,6 +43,7 @@ int main(int argc, char** argv){
 	float left_arrow_scale = 1.;
 
 	/* Load malus texture */
+	GLuint bonus = createRGBATexture("./textures/main/bonus.png");
 	GLuint malus = createRGBATexture("./textures/main/malus.png");
 	GLuint background1 = createRGBTexture("./textures/level_1/fond.jpg");
 	GLuint background2 = createRGBTexture("./textures/level_2/fond.jpg");
@@ -52,6 +53,7 @@ int main(int argc, char** argv){
 	GLuint select_text = createRGBATexture("./textures/main/select.png");
 	GLuint esc_text = createRGBATexture("./textures/main/esc.png");
 	GLuint pause = createRGBATexture("./textures/main/pause.png");
+	GLuint vie = createRGBATexture("./textures/main/vie.png");
 
 	/* Boucle d'affichage */
 	while(loop) {
@@ -239,6 +241,22 @@ int main(int argc, char** argv){
 				glTranslatef(2 - world.player->x, 0, 0); // Translation du monde pour suivre le joueur
 				drawWorld(world);
 			glPopMatrix();
+
+			/* Affichage de la vie du joueur */
+			for (int i = 0; i < world.player->hp; i++) {
+				glPushMatrix();
+					glTranslatef(NB_UNITS_X-i-1 , NB_UNITS_Y-1, 0);
+					displayTexture(vie, 0.7, 0.7);
+				glPopMatrix();			
+			}
+
+			/* Affichage du niveau du vaisseau */
+			for (int i = 0; i < world.player->nb_bonus; i++) {
+				glPushMatrix();
+					glTranslatef(NB_UNITS_X-i-1 , NB_UNITS_Y-2, 0);
+					displayTexture(bonus, 0.7, 0.7);
+				glPopMatrix();			
+			}
 
 		}
 
