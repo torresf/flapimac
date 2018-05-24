@@ -96,7 +96,7 @@ int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove)
 int checkMissilesIntersections(World* world) {
 	ElementList tmp = world->enemyList;
 	while (tmp) {
-		if (checkIntersections(&(world->player), &(tmp->missiles), 0)) { 
+		if (checkIntersections(&(world->player), &(tmp->missiles), 1)) { 
 			return 1;
 		}
 		tmp = tmp->next;

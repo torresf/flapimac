@@ -176,10 +176,13 @@ int main(int argc, char** argv){
 			if (world.enemyList) {
 				if (checkMissilesIntersections(&world)) {
 					printf("Touché par missile ennemi.\n");
-					start = 0;
-					level_loaded = 0;
-					translation = 0;
-					initWorld(&world);
+					if (world.player == NULL)
+					{
+						start = 0;
+						level_loaded = 0;
+						translation = 0;
+						initWorld(&world);
+					}
 					continue;
 				}
 			}
