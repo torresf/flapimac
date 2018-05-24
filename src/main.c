@@ -249,7 +249,9 @@ int main(int argc, char** argv){
 			glPopMatrix();
 
 			/* Affichage de la vie du joueur */
-			for (int i = 0; i < world.player->hp; i++) {
+			int i;
+			int j;
+			for (i = 0; i < world.player->hp; i++) {
 				glPushMatrix();
 					glTranslatef(NB_UNITS_X-i-1 , NB_UNITS_Y-1, 0);
 					displayTexture(vie, 0.7, 0.7);
@@ -257,9 +259,9 @@ int main(int argc, char** argv){
 			}
 
 			/* Affichage du niveau du vaisseau */
-			for (int i = 0; i < world.player->nb_bonus; i++) {
+			for (j = 0; j < world.player->nb_bonus; j++) {
 				glPushMatrix();
-					glTranslatef(NB_UNITS_X-i-1 , NB_UNITS_Y-2, 0);
+					glTranslatef(NB_UNITS_X-j-1 , NB_UNITS_Y-2, 0);
 					displayTexture(bonus, 0.7, 0.7);
 				glPopMatrix();			
 			}

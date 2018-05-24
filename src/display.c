@@ -80,16 +80,18 @@ void drawElements(ElementList list) {
                 glPushMatrix();
                     glTranslatef((list->width / 2) - 0.05, 0, 0);
                     glScalef(.25, 1, 0);
-                    glPushMatrix();
-                        glRotatef(list->x * -120, 0, 0, 1);
-                        glScalef(.2, 1, 0);
-                        drawSquare(1);
-                    glPopMatrix();
-                    glPushMatrix();
-                        glRotatef((list->x * -120) + 90, 0, 0, 1);
-                        glScalef(.15, 1, 0);
-                        drawSquare(1);
-                    glPopMatrix();
+                	glRotatef((list->x * -120), 0, 0, 1);
+                	glScalef(.2, 1, 0);
+                	drawSquare(1);
+
+                	glScalef(5,1,0);
+                	glRotatef(-(list->x * -120), 0, 0, 1);
+                	glScalef(4,1,0);
+
+                	glScalef(.25, 1, 0);
+                	glRotatef((list->x * -120) + 90, 0, 0, 1);
+                	glScalef(.2, 1, 0);
+                    drawSquare(1);
                 glPopMatrix();
                 glColor3ub(255, 255, 255);
             } else if(list->type == 2) {
@@ -98,16 +100,19 @@ void drawElements(ElementList list) {
                     glTranslatef(list->width/2 - 0.05, 0.55, 0);
                     glRotatef(-90,0,0,1);
                     glScalef(.25, 1, 0);
-                    glPushMatrix();
-                        glRotatef(list->y * -250, 0, 0, 1);
-                        glScalef(.2, 1, 0);
-                        drawSquare(1);
-                    glPopMatrix();
-                    glPushMatrix();
-                        glRotatef((list->y * -250) + 90, 0, 0, 1);
-                        glScalef(.15, 1, 0);
-                        drawSquare(1);
-                    glPopMatrix();
+                    glRotatef(list->y * -250, 0, 0, 1);
+                    glScalef(.2, 1, 0);
+                    drawSquare(1);
+
+                    
+                    glScalef(5, 1, 0);
+                    glRotatef(-(list->y * -250), 0, 0, 1);
+                    glScalef(4, 1, 0);
+
+                    glScalef(.15, 1, 0);
+                    glRotatef((list->y * -250) + 90, 0, 0, 1);
+                    glScalef(.2, 1, 0);
+                    drawSquare(1);
                 glPopMatrix();
                 glColor3ub(255, 255, 255);
             } 
