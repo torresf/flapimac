@@ -107,30 +107,30 @@ int main(int argc, char** argv){
 				
 			} else {
 				// Menu sélection du niveau
-				if (chosen_level != 1) {
-					glPushMatrix();
-						glTranslatef(13, 4, 0);
-						glRotatef(90, 0, 0, 1);
-						glScalef(left_arrow_scale, left_arrow_scale, 1);
-						displayTexture(arrow, 1.02, 1.32);
-					glPopMatrix();
-				}
-				if (chosen_level != 4) {
-					glPushMatrix();
-						glTranslatef(17, 4, 0);
-						glRotatef(-90, 0, 0, 1);
-						glScalef(right_arrow_scale, right_arrow_scale, 1);
-						displayTexture(arrow, 1.02, 1.32);
-					glPopMatrix();
-				}
 				glPushMatrix();
-					glTranslatef(15, 5, 0);
-					displayTexture(select_text, 5.86, 0.55);
+					glTranslatef(NB_UNITS_X / 2, 5, 0);
+					displayTexture(select_text, 7, 3.19);
 				glPopMatrix();
 				glPushMatrix();
 					glTranslatef(1, NB_UNITS_Y-1, 0);
 					displayTexture(esc_text, 1.04, 0.55);
 				glPopMatrix();
+				if (chosen_level != 1) {
+					glPushMatrix();
+						glTranslatef(12.5, 4.5, 0);
+						glRotatef(90, 0, 0, 1);
+						glScalef(0.7*left_arrow_scale, 0.7*left_arrow_scale, 1);
+						displayTexture(arrow, 1.02, 1.32);
+					glPopMatrix();
+				}
+				if (chosen_level != 4) {
+					glPushMatrix();
+						glTranslatef(17.5, 4.5, 0);
+						glRotatef(-90, 0, 0, 1);
+						glScalef(0.7*right_arrow_scale, 0.7*right_arrow_scale, 1);
+						displayTexture(arrow, 1.02, 1.32);
+					glPopMatrix();
+				}
 			}
 		} else {
 			// Lancement du jeu
