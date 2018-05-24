@@ -92,7 +92,25 @@ void drawElements(ElementList list) {
                     glPopMatrix();
                 glPopMatrix();
                 glColor3ub(255, 255, 255);
-            }
+            } else if(list->type == 2) {
+                glColor3ub(76, 59, 45);
+                glPushMatrix();
+                    glTranslatef(list->width/2 - 0.05, 0.55, 0);
+                    glRotatef(-90,0,0,1);
+                    glScalef(.25, 1, 0);
+                    glPushMatrix();
+                        glRotatef(list->y * -250, 0, 0, 1);
+                        glScalef(.2, 1, 0);
+                        drawSquare(1);
+                    glPopMatrix();
+                    glPushMatrix();
+                        glRotatef((list->y * -250) + 90, 0, 0, 1);
+                        glScalef(.15, 1, 0);
+                        drawSquare(1);
+                    glPopMatrix();
+                glPopMatrix();
+                glColor3ub(255, 255, 255);
+            } 
         glPopMatrix();
         list = list->next;
     }
