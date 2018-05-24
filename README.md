@@ -1,7 +1,6 @@
 # Flapimac
 Jeu en OpenGL développé par Tom Samaille et Florian Torres
 
-
 # A faire
 - [x] Créer structure Monde
 - [x] function initWorld()
@@ -10,12 +9,12 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 - [x] Créer des obstacles destructibles
 - [x] Créer plusieurs niveaux
 - [x] Menu (Accueil, écran intermédiaire niveau, écran de partie perdue)
-- [ ] Retravailler les Bonus / Malus
+- [x] Retravailler les Bonus / Malus
 - [x] Vie du joueur
 
 # Idées améliorations
+- [x] Vie des ennemis / obstacles
 - [ ] Gestion du score
-- [ ] Vie des ennemis
 - [ ] Aléatoire sur la selection des textures des obstacles pour faire moins monotone
 - [ ] Coefficients aléatoires
 - [ ] Différents ennemis / projectiles (projectiles plus puissants grâce au bonus)

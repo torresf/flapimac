@@ -70,8 +70,6 @@ int checkIntersections(ElementList* list1, ElementList* list2, int remove1, int 
 	while (tmp2) {
 		while (tmp1) {
 			if (checkSquareSquareCollision(*tmp1, *tmp2) == 1) {
-				printf("Vie tmp 1 : %d\n", tmp1->hp);
-				printf("Vie tmp 2 : %d\n", tmp2->hp);
 				if (remove2 == 1){
 					tmp2->hp -= 1;
 					if (tmp2->hp <= 0) {
