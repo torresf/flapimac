@@ -406,6 +406,19 @@ int main(int argc, char** argv){
 
 	deleteWorld(&world);
 
+	//Libération des textures
+	clearTexture(&bonus);
+	clearTexture(&missile);
+	clearTexture(&background1);
+	clearTexture(&background2);
+	clearTexture(&background3);
+	clearTexture(&background4);
+	clearTexture(&arrow);
+	clearTexture(&select_text);
+	clearTexture(&esc_text);
+	clearTexture(&pause);
+	clearTexture(&vie);
+
 	Mix_FreeMusic(musique); //Libération de la musique
 	Mix_CloseAudio(); //Fermeture de l'API
 
