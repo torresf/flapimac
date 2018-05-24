@@ -26,4 +26,3 @@ Jeu en OpenGL développé par Tom Samaille et Florian Torres
 - [ ] Explosion sur les collisions
 - [ ] Bande de couleur : Accélération du joueur jusqu'à la prochaine bande / pendant un temps imparti
 - [ ] Multijoueur
-- [ ] Déplacement gauche/droite

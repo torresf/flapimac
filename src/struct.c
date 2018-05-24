@@ -64,7 +64,7 @@ void removeElementFromList(Element* element, ElementList* list) {
 }
 
 /* Vérifie si il n'y a pas de collisions entre les éléments de deux listes différentes, si oui : si action == 0, on supprime l'élément de la 2ème liste | si action == 1, on supprime les éléments des deux listes */
-int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove) {
+int checkIntersections(ElementList* list1, ElementList* list2, int remove1, int remove2) {
 	Element* tmp1 = *list1;
 	Element* tmp2 = *list2;
 	while (tmp2) {
@@ -72,11 +72,13 @@ int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove)
 			if (checkSquareSquareCollision(*tmp1, *tmp2) == 1) {
 				printf("Vie tmp 1 : %d\n", tmp1->hp);
 				printf("Vie tmp 2 : %d\n", tmp2->hp);
-				tmp2->hp -= 1;
-				if (tmp2->hp <= 0) {
-					removeElementFromList(tmp2, list2);
+				if (remove2 == 1){
+					tmp2->hp -= 1;
+					if (tmp2->hp <= 0) {
+						removeElementFromList(tmp2, list2);
+					}
 				}
-				if (doubleRemove == 1){
+				if (remove1 == 1){
 					tmp1->hp -= 1;
 					if (tmp1->hp <= 0) {
 						removeElementFromList(tmp1, list1);
@@ -96,7 +98,7 @@ int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove)
 int checkMissilesIntersections(World* world) {
 	ElementList tmp = world->enemyList;
 	while (tmp) {
-		if (checkIntersections(&(world->player), &(tmp->missiles), 1)) { 
+		if (checkIntersections(&(world->player), &(tmp->missiles), 1, 1) || checkIntersections(&(world->obstacleList), &(tmp->missiles), 0, 1) || checkIntersections(&(world->brokableObstacleList), &(tmp->missiles), 0, 1) || checkIntersections(&(world->bonusList), &(tmp->missiles), 0, 1) || checkIntersections(&(world->player->missiles), &(tmp->missiles), 1, 1)) { 
 			return 1;
 		}
 		tmp = tmp->next;
@@ -108,15 +110,15 @@ int checkMissilesIntersections(World* world) {
 int checkSquareSquareCollision(Element a, Element b) {
     // Collision axe x
     int collisionX = 0;
-    if (a.x + a.width >= b.x && b.x + b.width >= a.x)
+    if (a.x + a.width > b.x && b.x + b.width > a.x)
     	collisionX = 1;
     // Collision axe y
     int collisionY = 0;
-    if (a.y + a.height >= b.y && b.y + b.height >= a.y)
+    if (a.y + a.height > b.y && b.y + b.height > a.y)
         collisionY = 1;
     // Collision seulement si les deux axes
     return collisionX * collisionY;
-} 
+}
 
 /* Fonction qui vide la mémoire de tous les éléments de la liste passée en paramètre sans valeur de retour. Supprime d'abord les missiles de la listes si il y en a */
 void deleteElements(ElementList* list) {

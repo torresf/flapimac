@@ -38,7 +38,7 @@ void addElementToList(Element* element, ElementList* list);
 void removeElementFromList(Element* element, ElementList* list);
 
 /* Vérifie si il n'y a pas de collisions entre les éléments de deux listes différentes, si oui : si action == 0, on supprime l'élément de la 2ème liste | si action == 1, on supprime les éléments des deux listes */
-int checkIntersections(ElementList* list1, ElementList* list2, int doubleRemove);
+int checkIntersections(ElementList* list1, ElementList* list2, int remove1, int remove2);
 
 /* Vérifie si il n'y a pas de collisions entre les missiles ennemis et le joueur */
 int checkMissilesIntersections(World* world);

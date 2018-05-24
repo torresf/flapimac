@@ -82,10 +82,23 @@ void moveMissiles(ElementList* shooter) {
 }
 
 /* Fonctions relatives mouvements verticaux des éléments (bonus / ennemis) */
-void moveVertical(ElementList* list) {
+void moveVertical(World world, ElementList* list) {
 	ElementList tmp = *list;
 	while (tmp) {
-		if (tmp->y >= NB_UNITS_Y - 1 || tmp->y <= 0) {
+		int collision = 0;
+		ElementList tmp2 = world.obstacleList;
+		ElementList tmp3 = world.brokableObstacleList;
+		while (tmp2){
+			if (checkSquareSquareCollision(*tmp, *tmp2) == 1)
+				collision = 1;
+			tmp2 = tmp2->next;
+		}
+		while (tmp3){
+			if (checkSquareSquareCollision(*tmp, *tmp3) == 1)
+				collision = 1;
+			tmp3 = tmp3->next;
+		}
+		if (tmp->y >= NB_UNITS_Y - 1 || tmp->y <= 0 || collision == 1) {
 			tmp->speed_y = -tmp->speed_y;
 		}
 		tmp->y += tmp->speed_y;

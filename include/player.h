@@ -33,7 +33,7 @@ void checkBonus(ElementList* player);
 void moveMissiles(ElementList* shooter);
 
 /* Fonctions de déplacement vertical des éléments */
-void moveVertical(ElementList* list);
+void moveVertical(World world, ElementList* list);
 
 /* Fonctions de tir des ennemis */
 void enemyShooting(ElementList* ennemyList, GLuint malus);
